@@ -2,7 +2,7 @@ set unstable := true
 
 # 默认任务：使用 fzf 选择要执行的任务
 default:
-    @just $(just --list | fzf | cut -d' ' -f1)
+    just $(just --list | gum filter --no-limit | awk '{print $1}')
 
 # =============================================================================
 # 别名
