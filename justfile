@@ -195,3 +195,21 @@ docs:
 examples:
     @echo "查看示例代码..."
     @ls -la examples/
+
+# git fetch
+fetch:
+    git fetch --all --tags --prune --jobs=10
+
+# git pull 全部仓库代码
+pull:
+    git pull --rebase
+
+# git push 推送到 origin gitcode gitee main 仓库
+push:
+    git push origin main
+    git push gitcode main
+    git push gitee main
+
+# format
+format:
+    just --fmt
