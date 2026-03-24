@@ -1,0 +1,111 @@
+###
+# REST Client 示例文件
+# 安装 VS Code 插件：REST Client
+# 点击 "Send Request" 发送请求
+
+# =============================================================================
+# 环境变量定义
+# =============================================================================
+@baseUrl = https://echo.apifox.com
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+# =============================================================================
+# GET 请求示例
+# =============================================================================
+
+### GET - 带查询参数的请求
+# 说明：可在请求时任意添加 Query 参数，服务端会将所有的参数原样返回
+GET {{baseUrl}}/get
+    ?q1=value1
+    &q2=value2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+# =============================================================================
+# POST 请求示例
+# =============================================================================
+
+### POST - 带 JSON Body 的请求
+# 说明：可在请求时任意添加 Body 或 Query 参数，服务端会将所有的参数原样返回
+POST {{baseUrl}}/post
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "name": "testuser",
+    "email": "test@example.com",
+    "data": {
+        "field1": "value1",
+        "field2": 123
+    }
+}
+
+###
+
+# =============================================================================
+# PUT 请求示例
+# =============================================================================
+
+### PUT - 更新资源
+# 说明：使用 PUT 方法更新完整资源
+PUT {{baseUrl}}/put?q1=update_value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "id": 1,
+    "username": "updated_user",
+    "email": "updated@example.com",
+    "status": "active"
+}
+
+###
+
+# =============================================================================
+# DELETE 请求示例
+# =============================================================================
+
+### DELETE - 删除资源
+# 说明：使用 DELETE 方法删除资源，支持 Query 参数和 Body
+DELETE {{baseUrl}}/delete?q1=delete_value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "id": 1,
+    "reason": "user_request"
+}
+
+###
+
+# =============================================================================
+# 其他常用请求示例
+# =============================================================================
+
+### 用户登录
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "SecurePass123!"
+}
+
+> {%
+    client.global.set("token", response.body.token);
+%}
+
+###
+
+### 健康检查
+GET {{baseUrl}}/get
+
+###
+
+### 带分页参数的请求
+GET {{baseUrl}}/get?page=1&pageSize=20&status=active
+Authorization: Bearer {{token}}
+
+###

@@ -1,0 +1,2471 @@
+openapi: 3.1.0
+info:
+  title: 默认模块
+  description: ""
+  version: 1.0.0
+tags:
+  - name: HTTP Methods
+  - name: Status codes
+  - name: Anything
+  - name: Dynamic data
+  - name: Response formats
+  - name: Response inspection
+  - name: Request inspection
+  - name: Auth
+  - name: Images
+  - name: Cookies
+  - name: Redirects
+paths:
+  /get:
+    get:
+      summary: 使用 Query 参数
+      deprecated: false
+      description: 可在请求时任意添加 Query 参数，服务端会将所有的参数原样返回
+      tags:
+        - HTTP Methods
+      parameters:
+        - name: q1
+          in: query
+          description: ""
+          required: false
+          example: v1
+          schema:
+            type: string
+        - name: q2
+          in: query
+          description: ""
+          required: false
+          example: v2
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  args:
+                    type: object
+                    properties:
+                      q1:
+                        type: string
+                      q2:
+                        type: string
+                    required:
+                      - q1
+                      - q2
+                  headers:
+                    type: object
+                    properties:
+                      Accept:
+                        type: string
+                      Accept-Encoding:
+                        type: string
+                      Connection:
+                        type: string
+                      Host:
+                        type: string
+                      User-Agent:
+                        type: string
+                    required:
+                      - Accept
+                      - Accept-Encoding
+                      - Connection
+                      - Host
+                      - User-Agent
+                  origin:
+                    type: string
+                  url:
+                    type: string
+                required:
+                  - args
+                  - headers
+                  - origin
+                  - url
+      security: []
+  /post:
+    post:
+      summary: 使用 POST 参数
+      deprecated: false
+      description: 可在请求时任意添加 Body 或 Query 参数，服务端会将所有的参数原样返回
+      tags:
+        - HTTP Methods
+      parameters:
+        - name: q1
+          in: query
+          description: ""
+          required: false
+          example: v1
+          schema:
+            type: string
+        - name: q2
+          in: query
+          description: ""
+          required: false
+          example: v2
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                d:
+                  type: string
+                dd:
+                  type: string
+              required:
+                - d
+                - dd
+            example:
+              d: deserunt
+              dd: adipisicing enim deserunt Duis
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  args:
+                    type: object
+                    properties:
+                      q1:
+                        type: string
+                      q2:
+                        type: string
+                    required:
+                      - q1
+                      - q2
+                  data:
+                    type: string
+                  files:
+                    type: object
+                    properties: {}
+                  form:
+                    type: object
+                    properties:
+                      b1:
+                        type: string
+                      b2:
+                        type: string
+                    required:
+                      - b1
+                      - b2
+                  headers:
+                    type: object
+                    properties:
+                      Accept:
+                        type: string
+                      Accept-Encoding:
+                        type: string
+                      Connection:
+                        type: string
+                      Content-Length:
+                        type: string
+                      Content-Type:
+                        type: string
+                      Host:
+                        type: string
+                      User-Agent:
+                        type: string
+                    required:
+                      - Accept
+                      - Accept-Encoding
+                      - Connection
+                      - Content-Length
+                      - Content-Type
+                      - Host
+                      - User-Agent
+                  json:
+                    type: "null"
+                  origin:
+                    type: string
+                  url:
+                    type: string
+                required:
+                  - args
+                  - data
+                  - files
+                  - form
+                  - headers
+                  - json
+                  - origin
+                  - url
+              example:
+                args:
+                  q1: v1
+                  q2: v2
+                data: ""
+                files: {}
+                form:
+                  b1: v1
+                  b2: v2
+                headers:
+                  Accept: "*/*"
+                  Accept-Encoding: gzip, deflate, br
+                  Connection: close
+                  Content-Length: "262"
+                  Content-Type: >-
+                    multipart/form-data;
+                    boundary=--------------------------497528158241070250470018
+                  Host: httpbin.apifox.com
+                  User-Agent: apifox/1.0.0 (https://www.apifox.cn)
+                json: null
+                origin: 116.23.126.194
+                url: https://httpbin.apifox.com/post?q1=v1&q2=v2
+      security: []
+  /delete:
+    delete:
+      summary: 使用 DELETE 参数
+      deprecated: false
+      description: ""
+      tags:
+        - HTTP Methods
+      parameters:
+        - name: q1
+          in: query
+          description: ""
+          required: false
+          example: v1
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                b1:
+                  example: v1
+                  type: string
+                b2:
+                  example: v2
+                  type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  args:
+                    type: object
+                    properties:
+                      q1:
+                        type: string
+                    required:
+                      - q1
+                  data:
+                    type: string
+                  files:
+                    type: object
+                    properties: {}
+                  form:
+                    type: object
+                    properties:
+                      b1:
+                        type: string
+                      b2:
+                        type: string
+                    required:
+                      - b1
+                      - b2
+                  headers:
+                    type: object
+                    properties:
+                      Accept:
+                        type: string
+                      Accept-Encoding:
+                        type: string
+                      Connection:
+                        type: string
+                      Content-Length:
+                        type: string
+                      Content-Type:
+                        type: string
+                      Host:
+                        type: string
+                      User-Agent:
+                        type: string
+                    required:
+                      - Accept
+                      - Accept-Encoding
+                      - Connection
+                      - Content-Length
+                      - Content-Type
+                      - Host
+                      - User-Agent
+                  json:
+                    type: "null"
+                  origin:
+                    type: string
+                  url:
+                    type: string
+                required:
+                  - args
+                  - data
+                  - files
+                  - form
+                  - headers
+                  - json
+                  - origin
+                  - url
+              example:
+                args:
+                  q1: v1
+                data: ""
+                files: {}
+                form:
+                  b1: v1
+                  b2: v2
+                headers:
+                  Accept: "*/*"
+                  Accept-Encoding: gzip, deflate, br
+                  Connection: close
+                  Content-Length: "262"
+                  Content-Type: >-
+                    multipart/form-data;
+                    boundary=--------------------------519039062991114527357557
+                  Host: httpbin.apifox.com
+                  User-Agent: apifox/1.0.0 (https://www.apifox.cn)
+                json: null
+                origin: 116.23.126.194
+                url: https://httpbin.apifox.com/delete?q1=v1
+      security: []
+  /put:
+    put:
+      summary: 使用 PUT 参数
+      deprecated: false
+      description: ""
+      tags:
+        - HTTP Methods
+      parameters:
+        - name: q1
+          in: query
+          description: ""
+          required: false
+          example: v1
+          schema:
+            type: string
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+            example: test value
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  args:
+                    type: object
+                    properties:
+                      q1:
+                        type: string
+                    required:
+                      - q1
+                  data:
+                    type: string
+                  files:
+                    type: object
+                    properties: {}
+                  form:
+                    type: object
+                    properties: {}
+                  headers:
+                    type: object
+                    properties:
+                      Accept:
+                        type: string
+                      Accept-Encoding:
+                        type: string
+                      Connection:
+                        type: string
+                      Content-Length:
+                        type: string
+                      Content-Type:
+                        type: string
+                      Host:
+                        type: string
+                      User-Agent:
+                        type: string
+                    required:
+                      - Accept
+                      - Accept-Encoding
+                      - Connection
+                      - Content-Length
+                      - Content-Type
+                      - Host
+                      - User-Agent
+                  json:
+                    type: "null"
+                  origin:
+                    type: string
+                  url:
+                    type: string
+                required:
+                  - args
+                  - data
+                  - files
+                  - form
+                  - headers
+                  - json
+                  - origin
+                  - url
+              example:
+                args:
+                  q1: v1
+                data: test value
+                files: {}
+                form: {}
+                headers:
+                  Accept: "*/*"
+                  Accept-Encoding: gzip, deflate, br
+                  Connection: close
+                  Content-Length: "10"
+                  Content-Type: text/plain
+                  Host: httpbin.apifox.com
+                  User-Agent: apifox/1.0.0 (https://www.apifox.cn)
+                json: null
+                origin: 116.23.126.194
+                url: https://httpbin.apifox.com/put?q1=v1
+      security: []
+  /patch:
+    patch:
+      summary: 使用 PATCH 参数
+      deprecated: false
+      description: ""
+      tags:
+        - HTTP Methods
+      parameters:
+        - name: q1
+          in: query
+          description: ""
+          required: false
+          example: v1
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                b1:
+                  type: string
+                b2:
+                  type: string
+              required:
+                - b1
+                - b2
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  args:
+                    type: object
+                    properties:
+                      q1:
+                        type: string
+                    required:
+                      - q1
+                  data:
+                    type: string
+                  files:
+                    type: object
+                    properties: {}
+                  form:
+                    type: object
+                    properties: {}
+                  headers:
+                    type: object
+                    properties:
+                      Accept:
+                        type: string
+                      Accept-Encoding:
+                        type: string
+                      Connection:
+                        type: string
+                      Content-Length:
+                        type: string
+                      Content-Type:
+                        type: string
+                      Host:
+                        type: string
+                      User-Agent:
+                        type: string
+                    required:
+                      - Accept
+                      - Accept-Encoding
+                      - Connection
+                      - Content-Length
+                      - Content-Type
+                      - Host
+                      - User-Agent
+                  json:
+                    type: object
+                    properties:
+                      b1:
+                        type: string
+                      b2:
+                        type: string
+                    required:
+                      - b1
+                      - b2
+                  origin:
+                    type: string
+                  url:
+                    type: string
+                required:
+                  - args
+                  - data
+                  - files
+                  - form
+                  - headers
+                  - json
+                  - origin
+                  - url
+              example:
+                args:
+                  q1: v1
+                data: |-
+                  {
+                      "b1": "culpa id laboris nisi reprehenderit",
+                      "b2": "adipisicing irure reprehenderit sed"
+                  }
+                files: {}
+                form: {}
+                headers:
+                  Accept: "*/*"
+                  Accept-Encoding: gzip, deflate, br
+                  Connection: close
+                  Content-Length: "100"
+                  Content-Type: application/json
+                  Host: httpbin.apifox.com
+                  User-Agent: apifox/1.0.0 (https://www.apifox.cn)
+                json:
+                  b1: culpa id laboris nisi reprehenderit
+                  b2: adipisicing irure reprehenderit sed
+                origin: 116.23.126.194
+                url: https://httpbin.apifox.com/patch?q1=v1
+      security: []
+  /status/{codes}:
+    delete:
+      summary: 返回指定的状态码（可指定多个随机返回）
+      deprecated: false
+      description: ""
+      tags:
+        - Status codes
+      parameters:
+        - name: codes
+          in: path
+          description: HTTP状态码，多个状态码使用英文逗号分隔
+          required: true
+          example: 200,404
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+        "300":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "500":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: 返回指定的状态码（可指定多个随机返回）
+      deprecated: false
+      description: ""
+      tags:
+        - Status codes
+      parameters:
+        - name: codes
+          in: path
+          description: HTTP状态码，多个状态码使用英文逗号分隔
+          required: true
+          example: 200,404
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+        "300":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "500":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    patch:
+      summary: 返回指定的状态码（可指定多个随机返回）
+      deprecated: false
+      description: ""
+      tags:
+        - Status codes
+      parameters:
+        - name: codes
+          in: path
+          description: HTTP状态码，多个状态码使用英文逗号分隔
+          required: true
+          example: 200,404
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+        "300":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "500":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    post:
+      summary: 返回指定的状态码（可指定多个随机返回）
+      deprecated: false
+      description: ""
+      tags:
+        - Status codes
+      parameters:
+        - name: codes
+          in: path
+          description: HTTP状态码，多个状态码使用英文逗号分隔
+          required: true
+          example: 200,404
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+        "300":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "500":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    put:
+      summary: 返回指定的状态码（可指定多个随机返回）
+      deprecated: false
+      description: ""
+      tags:
+        - Status codes
+      parameters:
+        - name: codes
+          in: path
+          description: HTTP状态码，多个状态码使用英文逗号分隔
+          required: true
+          example: 200,404
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+        "300":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "500":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    trace:
+      summary: 返回指定的状态码（可指定多个随机返回）
+      deprecated: false
+      description: ""
+      tags:
+        - Status codes
+      parameters:
+        - name: codes
+          in: path
+          description: HTTP状态码，多个状态码使用英文逗号分隔
+          required: true
+          example: 200,404
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+        "300":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "500":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /anything:
+    delete:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    patch:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    post:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+      security: []
+    put:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    trace:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /anything/{anything}:
+    delete:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters:
+        - name: anything
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters:
+        - name: anything
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    patch:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters:
+        - name: anything
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    post:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters:
+        - name: anything
+          in: path
+          description: ""
+          required: true
+          example: "1"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    put:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters:
+        - name: anything
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    trace:
+      summary: 返回所有Request的内容
+      deprecated: false
+      description: ""
+      tags:
+        - Anything
+      parameters:
+        - name: anything
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /base64/{value}:
+    get:
+      summary: 解码 base64url-encoded 字符串
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: value
+          in: path
+          description: ""
+          required: true
+          example: 56S65L6L5YC8
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /bytes/{n}:
+    get:
+      summary: 返回 n 个随机 bytes
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: "n"
+          in: path
+          description: ""
+          required: true
+          example: 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /delay/{delay}:
+    delete:
+      summary: 延迟返回
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: delay
+          in: path
+          description: 延迟时长，单位：秒
+          required: true
+          example: 5
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: 延迟返回
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: delay
+          in: path
+          description: ""
+          required: true
+          example: 5
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    patch:
+      summary: 延迟返回
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: delay
+          in: path
+          description: ""
+          required: true
+          example: 5
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    post:
+      summary: 延迟返回
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: delay
+          in: path
+          description: "5"
+          required: true
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    put:
+      summary: 延迟返回
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: delay
+          in: path
+          description: ""
+          required: true
+          example: 5
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    trace:
+      summary: 延迟返回
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: delay
+          in: path
+          description: ""
+          required: true
+          example: 5
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /drip:
+    get:
+      summary: Drips data over a duration after an optional initial delay.
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: duration
+          in: query
+          description: The amount of time (in seconds) over which to drip each byte
+          required: false
+          example: 1
+          schema:
+            type: number
+        - name: numbytes
+          in: query
+          description: The number of bytes to respond with
+          required: false
+          example: 50
+          schema:
+            type: integer
+        - name: code
+          in: query
+          description: The response code that will be returned
+          required: false
+          example: 402
+          schema:
+            type: integer
+        - name: delay
+          in: query
+          description: The amount of time (in seconds) to delay before responding
+          required: false
+          example: 1
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /links/{n}/{offset}:
+    get:
+      summary: 生成包含分页码的数据
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: "n"
+          in: path
+          description: ""
+          required: true
+          example: 10
+          schema:
+            type: integer
+        - name: offset
+          in: path
+          description: ""
+          required: true
+          example: 5
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /range/{numbytes}:
+    get:
+      summary: Streams 方式返回 n 个字节
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: numbytes
+          in: path
+          description: ""
+          required: true
+          example: 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /stream-bytes/{n}:
+    get:
+      summary: Stream 方式返回 n 个字节
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: "n"
+          in: path
+          description: ""
+          required: true
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /stream/{n}:
+    get:
+      summary: Stream 方式返回 n 个 JSON
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters:
+        - name: "n"
+          in: path
+          description: ""
+          required: true
+          example: 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /uuid:
+    get:
+      summary: 返回一个 UUID4
+      deprecated: false
+      description: ""
+      tags:
+        - Dynamic data
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /brotli:
+    get:
+      summary: 返回 Brotli-encoded 数据
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /deflate:
+    get:
+      summary: 返回 Deflate-encoded 数据
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /deny:
+    get:
+      summary: Returns page denied by robots.txt rules.
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /encoding/utf8:
+    get:
+      summary: 返回  UTF-8 encoded body
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /gzip:
+    get:
+      summary: 返回 GZip-encoded 数据
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /html:
+    get:
+      summary: 返回简单的 HTML 数据
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /json:
+    get:
+      summary: 返回简单的 JSON 数据
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /robots.txt:
+    get:
+      summary: 返回 robots.txt rules
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /xml:
+    get:
+      summary: 返回简单的 XML 数据
+      deprecated: false
+      description: ""
+      tags:
+        - Response formats
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /cache:
+    get:
+      summary: >-
+        Returns a 304 if an If-Modified-Since header or If-None-Match is
+        present. Returns the same as a GET otherwise.
+      deprecated: false
+      description: ""
+      tags:
+        - Response inspection
+      parameters:
+        - name: If-Modified-Since
+          in: header
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: If-None-Match
+          in: header
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/octet-stream:
+              schema:
+                type: object
+                properties: {}
+        "304":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /cache/{value}:
+    get:
+      summary: Sets a Cache-Control header for n seconds.
+      deprecated: false
+      description: ""
+      tags:
+        - Response inspection
+      parameters:
+        - name: value
+          in: path
+          description: ""
+          required: true
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /etag/{etag}:
+    get:
+      summary: >-
+        Assumes the resource has the given etag and responds to If-None-Match
+        and If-Match headers appropriately.
+      deprecated: false
+      description: ""
+      tags:
+        - Response inspection
+      parameters:
+        - name: etag
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: If-None-Match
+          in: header
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+        - name: If-Match
+          in: header
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "412":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /response-headers:
+    get:
+      summary: Returns a set of response headers from the query string.
+      deprecated: false
+      description: ""
+      tags:
+        - Response inspection
+      parameters:
+        - name: freeform
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    post:
+      summary: Returns a set of response headers from the query string.
+      deprecated: false
+      description: ""
+      tags:
+        - Response inspection
+      parameters:
+        - name: freeform
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /headers:
+    get:
+      summary: 返回 Request HTTP header
+      deprecated: false
+      description: ""
+      tags:
+        - Request inspection
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /ip:
+    get:
+      summary: 返回请求的 IP 地址
+      deprecated: false
+      description: ""
+      tags:
+        - Request inspection
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /user-agent:
+    get:
+      summary: 返回请求的 User-Agent header
+      deprecated: false
+      description: ""
+      tags:
+        - Request inspection
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /basic-auth/{user}/{passwd}:
+    get:
+      summary: HTTP Basic Auth
+      deprecated: false
+      description: ""
+      tags:
+        - Auth
+      parameters:
+        - name: user
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+        - name: passwd
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security:
+        - basic: []
+  /bearer:
+    get:
+      summary: Bearer Token
+      deprecated: false
+      description: ""
+      tags:
+        - Auth
+      parameters:
+        - name: Authorization
+          in: header
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security:
+        - bearer: []
+  /digest-auth/{qop}/{user}/{passwd}:
+    get:
+      summary: Digest Auth
+      deprecated: false
+      description: ""
+      tags:
+        - Auth
+      parameters:
+        - name: qop
+          in: path
+          description: auth or auth-int
+          required: true
+          example: test
+          schema:
+            type: string
+        - name: user
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+        - name: passwd
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /digest-auth/{qop}/{user}/{passwd}/{algorithm}:
+    get:
+      summary: Digest Auth + Algorithm
+      deprecated: false
+      description: ""
+      tags:
+        - Auth
+      parameters:
+        - name: qop
+          in: path
+          description: auth or auth-int
+          required: true
+          example: test
+          schema:
+            type: string
+        - name: user
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+        - name: passwd
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+        - name: algorithm
+          in: path
+          description: MD5, SHA-256, SHA-512
+          required: true
+          example: MD5
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /digest-auth/{qop}/{user}/{passwd}/{algorithm}/{stale_after}:
+    get:
+      summary: Digest Auth + Algorithm
+      deprecated: false
+      description: |
+        allow settings the stale_after argument.
+      tags:
+        - Auth
+      parameters:
+        - name: qop
+          in: path
+          description: auth or auth-int
+          required: true
+          example: test
+          schema:
+            type: string
+        - name: user
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+        - name: passwd
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+        - name: algorithm
+          in: path
+          description: MD5, SHA-256, SHA-512
+          required: true
+          example: MD5
+          schema:
+            type: string
+        - name: stale_after
+          in: path
+          description: ""
+          required: true
+          example: test
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /hidden-basic-auth/{user}/{passwd}:
+    get:
+      summary: HTTP Basic Auth
+      deprecated: false
+      description: ""
+      tags:
+        - Auth
+      parameters:
+        - name: user
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+        - name: passwd
+          in: path
+          description: ""
+          required: true
+          example: admin
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security:
+        - basic: []
+  /image/jpeg:
+    get:
+      summary: 返回 JPEG 格式图片
+      deprecated: false
+      description: ""
+      tags:
+        - Images
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /image/png:
+    get:
+      summary: 返回 PNG 格式图片
+      deprecated: false
+      description: ""
+      tags:
+        - Images
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /image/svg:
+    get:
+      summary: 返回 SVG 格式图片
+      deprecated: false
+      description: ""
+      tags:
+        - Images
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /image/webp:
+    get:
+      summary: 返回 SEBP 格式图片
+      deprecated: false
+      description: ""
+      tags:
+        - Images
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /image:
+    get:
+      summary: 根据 Accept header 返回对应格式图片
+      deprecated: false
+      description: ""
+      tags:
+        - Images
+      parameters:
+        - name: Accept
+          in: header
+          description: ""
+          required: false
+          example: image/jpeg
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /cookies:
+    get:
+      summary: 返回 cookie 数据
+      deprecated: false
+      description: ""
+      tags:
+        - Cookies
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /cookies/delete:
+    get:
+      summary: >-
+        Deletes cookie(s) as provided by the query string and redirects to
+        cookie list.
+      deprecated: false
+      description: ""
+      tags:
+        - Cookies
+      parameters:
+        - name: freeform
+          in: query
+          description: ""
+          required: false
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /cookies/set:
+    get:
+      summary: 通过 Query 参数设置 Cookie
+      deprecated: false
+      description: ""
+      tags:
+        - Cookies
+      parameters:
+        - name: k1
+          in: query
+          description: ""
+          required: false
+          example: v1
+          schema:
+            type: string
+        - name: k2
+          in: query
+          description: ""
+          required: false
+          example: v2
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /cookies/set/{name}/{value}:
+    get:
+      summary: Sets a cookie and redirects to cookie list.
+      deprecated: false
+      description: ""
+      tags:
+        - Cookies
+      parameters:
+        - name: name
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: value
+          in: path
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /absolute-redirect/{n}:
+    get:
+      summary: Absolutely 302 Redirects n times.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters:
+        - name: "n"
+          in: path
+          description: ""
+          required: true
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /redirect-to:
+    delete:
+      summary: 302/3XX Redirects to the given URL.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters: []
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    get:
+      summary: 302/3XX Redirects to the given URL.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters:
+        - name: url
+          in: query
+          description: ""
+          required: true
+          example: ""
+          schema:
+            type: string
+        - name: status_code
+          in: query
+          description: ""
+          required: false
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    patch:
+      summary: 302/3XX Redirects to the given URL.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters: []
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    post:
+      summary: 302/3XX Redirects to the given URL.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                url:
+                  example: ""
+                  type: string
+                status_code:
+                  example: ""
+                  type: string
+              required:
+                - url
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    put:
+      summary: 302/3XX Redirects to the given URL.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                url:
+                  example: ""
+                  type: string
+                status_code:
+                  example: ""
+                  type: string
+              required:
+                - url
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+    trace:
+      summary: 302/3XX Redirects to the given URL.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters: []
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /redirect/{n}:
+    get:
+      summary: 302 Redirects n times.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters:
+        - name: "n"
+          in: path
+          description: ""
+          required: true
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+  /relative-redirect/{n}:
+    get:
+      summary: Relatively 302 Redirects n times.
+      deprecated: false
+      description: ""
+      tags:
+        - Redirects
+      parameters:
+        - name: "n"
+          in: path
+          description: ""
+          required: true
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "302":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      security: []
+webhooks: {}
+components:
+  schemas: {}
+  responses: {}
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+    bearer:
+      type: http
+      scheme: bearer
+servers:
+  - url: https://echo.apifox.com
+    description: 正式环境
+security: []
