@@ -1,7 +1,11 @@
 set unstable := true
 
 # 默认任务：使用 fzf 选择要执行的任务
-default:
+default: format
+    just --fmt
+    just --list
+
+run:
     just $(just --list | gum filter --no-limit | awk '{print $1}')
 
 # =============================================================================
@@ -25,6 +29,8 @@ alias c := clear
 alias dm := db-migrate
 alias ds := db-seed
 alias db := db-backup
+alias em := example-mysql
+alias esi := example-sqlite
 alias doc := docs
 
 # 测试命令别名
@@ -93,6 +99,22 @@ clear:
     @echo "🧹 清理测试临时目录..."
     @rm -rf test-results playwright-report 2>/dev/null || true
 
+    # 清理 Python 缓存目录
+    @echo "🧹 清理 Python 缓存..."
+    @find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+    @find . -type f -name "*.pyc" -delete 2>/dev/null || true
+    @find . -type f -name "*.pyo" -delete 2>/dev/null || true
+    @find . -type f -name "*.pyd" -delete 2>/dev/null || true
+
+    # 清理测试和工具缓存
+    @echo "🧹 清理测试工具缓存..."
+    @rm -rf .pytest_cache .coverage htmlcov .mypy_cache .ruff_cache 2>/dev/null || true
+
+    # 清理系统临时文件
+    @echo "🧹 清理系统临时文件..."
+    @find . -type f -name ".DS_Store" -delete 2>/dev/null || true
+    @find . -type f -name "Thumbs.db" -delete 2>/dev/null || true
+
     @echo "✅ 清理完成！"
 
 # =============================================================================
@@ -113,6 +135,14 @@ db-seed:
 db-backup:
     @echo "备份数据库..."
     @uv run db/mysql/backup.sh
+
+# 运行 db/mysql/example_mysql.py 脚本的帮助命令
+example-mysql +ARGS:
+    @uv run db/mysql/example_mysql.py {{ ARGS }}
+
+# 运行 db/sqlite/example_sqlite.py 脚本
+example-sqlite +ARGS:
+    @uv run db/sqlite/example_sqlite.py {{ ARGS }}
 
 # =============================================================================
 # 测试相关
@@ -213,6 +243,8 @@ push:
 # format
 format:
     just --fmt
+    @echo "🔍 检查 Python 文件格式..."
+    @uvx ruff check --fix .
 
 # 创建 tmux 窗口
 tmux:
