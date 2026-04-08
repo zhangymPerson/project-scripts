@@ -6,7 +6,7 @@ default: format
     just --list
 
 run:
-    just $(just --list | gum filter --no-limit | awk '{print $1}')
+    @just --choose 
 
 # =============================================================================
 # 别名
@@ -14,8 +14,6 @@ run:
 # 示例命令别名
 
 alias ep := example-python
-alias eph := example-python-hello
-alias epi := example-python-info
 alias es := example-shell
 alias esd := example-shell-debug
 alias ex := examples
@@ -57,17 +55,9 @@ alias ot := ops-token
 # 示例命令
 # =============================================================================
 
-# 运行 examples/python/example.py 脚本的帮助命令
-example-python:
-    @uv run examples/python/example.py --help
-
-# 运行 examples/python/example.py 的 hello 子命令
-example-python-hello:
-    @uv run examples/python/example.py hello --name World
-
-# 运行 examples/python/example.py 的 info 子命令
-example-python-info:
-    @uv run examples/python/example.py info
+# 运行 examples/python/example.py 脚本，接受参数传递
+example-python +ARGS:
+    @uv run examples/python/example.py {{ ARGS }}
 
 # 运行 examples/shell/example.sh 脚本
 example-shell:

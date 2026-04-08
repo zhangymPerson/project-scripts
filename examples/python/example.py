@@ -17,15 +17,27 @@ Python 脚本示例 - 展示 uv 内联依赖和命令行参数处理
 # dependencies = [
 #     "loguru>=0.7",
 #     "typer>=0.9",
+#     "rich>=13.0",
 # ]
 # ///
 
 import os
 import sys
 from pathlib import Path
+import time
 
 import typer
 from loguru import logger
+from rich.console import Console
+from rich.table import Table
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeRemainingColumn
+from rich.markdown import Markdown
+from rich.syntax import Syntax
+from rich.tree import Tree
+from rich.panel import Panel
+from rich.columns import Columns
+from rich.text import Text
+from rich.rule import Rule
 
 # =============================================================================
 # 配置
@@ -121,6 +133,129 @@ def greet(
 
         logger.info(f"第 {i + 1}/{times} 次问候：{greeting}")
         print(f"[{i + 1}/{times}] {greeting}")
+
+
+@app.command()
+def rich_demo():
+    """
+    Rich 包功能演示 - 颜色、表格、进度条、Markdown、语法高亮、树形结构等
+    """
+    console = Console()
+
+    # 标题
+    console.print(Rule("Rich 功能演示", style="bold magenta"))
+    console.print()
+
+    # 1. 颜色示例
+    console.print(Panel("🎨 颜色示例", style="bold blue"))
+    colors = [
+        ("红色", "red"),
+        ("绿色", "green"), 
+        ("蓝色", "blue"),
+        ("黄色", "yellow"),
+        ("紫色", "purple"),
+        ("青色", "cyan"),
+        ("白色", "white"),
+        ("黑色", "black"),
+    ]
+    
+    color_texts = [Text(name, style=style) for name, style in colors]
+    console.print(Columns(color_texts, equal=True, expand=True))
+    console.print()
+
+    # 2. 表格示例
+    console.print(Panel("📊 表格示例", style="bold green"))
+    table = Table(title="系统信息", show_header=True, header_style="bold magenta")
+    table.add_column("项目", style="dim")
+    table.add_column("值")
+    table.add_column("状态", justify="right")
+    
+    table.add_row("操作系统", sys.platform, "[green]✓[/green]")
+    table.add_row("Python版本", sys.version.split()[0], "[yellow]⚠[/yellow]")
+    table.add_row("工作目录", str(Path.cwd()), "[blue]ℹ[/blue]")
+    table.add_row("调试模式", "开启" if DEBUG_MODE else "关闭", "[cyan]•[/cyan]")
+    
+    console.print(table)
+    console.print()
+
+    # 3. 进度条示例
+    console.print(Panel("⏳ 进度条示例", style="bold yellow"))
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(),
+        TimeRemainingColumn(),
+        console=console,
+    ) as progress:
+        task1 = progress.add_task("下载文件...", total=100)
+        for i in range(100):
+            progress.update(task1, advance=1)
+            time.sleep(0.02)
+        
+        task2 = progress.add_task("处理数据...", total=50)
+        for i in range(50):
+            progress.update(task2, advance=1)
+            time.sleep(0.04)
+
+    console.print()
+
+    # 4. Markdown 渲染示例
+    console.print(Panel("📝 Markdown 渲染示例", style="bold cyan"))
+    md_content = """
+# 这是一个标题
+
+**粗体文本**和*斜体文本*
+
+- 列表项 1
+- 列表项 2  
+- 列表项 3
+
+> 这是一段引用文本
+
+```python
+print("Hello, World!")
+```
+"""
+    markdown = Markdown(md_content)
+    console.print(markdown)
+    console.print()
+
+    # 5. 语法高亮示例
+    console.print(Panel("💻 语法高亮示例", style="bold purple"))
+    code = '''
+import typer
+from rich.console import Console
+
+console = Console()
+console.print("Hello, Rich!")
+
+@app.command()
+def hello():
+    console.print("This is syntax highlighting!")
+'''
+    syntax = Syntax(code, "python", theme="monokai", line_numbers=True)
+    console.print(syntax)
+    console.print()
+
+    # 6. 树形结构示例
+    console.print(Panel("🌳 树形结构示例", style="bold red"))
+    tree = Tree("项目结构")
+    tree.add(Tree("src"))
+    tree.add(Tree("tests"))
+    tree.add(Tree("docs").add(Tree("api")).add(Tree("guides")))
+    tree.add(Tree("config"))
+    tree.add(Tree("logs"))
+    
+    console.print(tree)
+    console.print()
+
+    # 7. 组合面板示例
+    console.print(Panel("🎯 组合面板示例", style="bold yellow"))
+    panel1 = Panel("这是第一个面板", title="面板 1", border_style="green")
+    panel2 = Panel("这是第二个面板", title="面板 2", border_style="blue")
+    console.print(Columns([panel1, panel2], equal=True, expand=True))
+
+    console.print(Rule("演示结束", style="bold"))
 
 
 # =============================================================================
