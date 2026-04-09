@@ -42,6 +42,7 @@ just test-api
 ```
 project-scripts/
 │
+├── browser/             # 浏览器自动化 — E2E 测试、爬虫、自动化操作 | Playwright, Selenium
 ├── db/                  # 数据库层 — 所有数据存储相关
 ├── storage/             # 存储 & 文件处理 — 非结构化数据
 ├── mq/                  # 消息队列层
@@ -64,6 +65,7 @@ project-scripts/
 
 | 目录        | 职责                         | 典型场景                            |
 | ----------- | ---------------------------- | ----------------------------------- |
+| `browser/`  | 浏览器自动化、E2E 测试、爬虫 | Playwright 自动化、Selenium 爬虫    |
 | `db/`       | 数据库迁移、种子数据、备份   | MySQL 迁移、MongoDB 索引管理        |
 | `storage/`  | 对象存储操作、文件处理       | S3→MinIO 迁移、图片压缩             |
 | `mq/`       | 消息队列管理                 | RabbitMQ 队列创建、Kafka Topic 管理 |
@@ -173,6 +175,10 @@ Authorization: Bearer {{token}}
 ## 🔧 常用命令
 
 ```bash
+# 浏览器自动化
+just -f browser/justfile mac-start-edge    # 启动 Edge 浏览器（Playwright 调试模式）
+just -f browser/justfile baidu            # 运行百度搜索示例
+
 # 数据库迁移
 uv run db/mysql/migrate.sh
 
