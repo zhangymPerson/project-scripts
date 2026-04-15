@@ -36,8 +36,37 @@ This file provides guidance to Qoder (qoder.com) when working with code in this 
 ### 前置要求
 - Python 3.11+
 - Bash 5.0+
-- [just](https://github.com/casey/just)（任务运行器）
+- [Task](https://taskfile.dev/)（任务运行器）
+- [just](https://github.com/casey/just)（可选，更好的任务运行器）
 - [uv](https://github.com/astral-sh/uv)（Python 包管理器）
+
+### Task 常用命令
+
+```bash
+# 查看所有可用任务
+task --list
+
+# 查看特定目录的任务
+task --list browser
+task --list db:mysql
+task --list storage:s3
+
+# 运行特定任务
+task browser                    # 浏览器自动化
+task db:mysql                   # MySQL 数据库操作
+task storage:s3                 # S3 存储操作
+task test:api                   # API 测试
+task deploy:k8s:helm:myapp      # Kubernetes Helm 部署
+task scripts:data:etl           # 运行 ETL 数据处理
+
+# 使用别名运行任务
+task mysql                      # 等同于 task db:mysql
+task s3                         # 等同于 task storage:s3
+task api                        # 等同于 task test:api
+
+# 查看任务帮助信息
+task --help
+```
 
 ### just 常用命令
 
@@ -46,34 +75,6 @@ just                  # 格式化 justfile 并列出任务
 just run              # 通过 fzf 交互式选择任务
 just clear            # 清理日志、缓存、临时文件
 
-# 浏览器
-just -f browser/justfile mac-start-edge    # 启动 Edge 浏览器（Playwright 调试模式）
-just -f browser/justfile baidu            # 运行百度搜索示例
-
-# 数据库
-just db-migrate       # 运行 MySQL 迁移
-just db-seed          # 加载种子数据
-just db-backup        # 备份数据库
-just example-mysql    # 运行 MySQL 示例脚本
-just example-sqlite   # 运行 SQLite 示例脚本
-
-# 测试
-just test-api         # 运行 API 测试（test/api 下的 pytest）
-just test-integration # 运行集成测试（test/integration 下的 pytest）
-just test-load        # 运行性能测试（test/load 下的 locust）
-just test-http        # 列出 HTTP 测试文件
-just example-http-hurl # 运行 Hurl 测试
-
-# 部署
-just deploy-dev       # Docker Compose 开发环境
-just deploy-staging   # Docker Compose 预发布环境
-just deploy-prod      # Docker Compose 生产环境
-just k8s-apply        # 应用 K8s 配置（kustomize dev overlay）
-
-# 运维
-just ops-diagnose     # 运行数据库诊断
-just ops-token        # 生成 Token
-
 # Git
 just fetch            # git fetch --all --tags --prune
 just pull             # git pull --rebase
@@ -81,6 +82,23 @@ just push             # 推送到 origin, gitcode, gitee（main 分支）
 
 # 格式化
 just format           # 格式化 justfile + ruff 检查 Python 文件
+```
+
+### Task 任务执行
+
+**Task 命令** - 使用 Taskfile.yml 定义的任务：
+```bash
+# 运行特定任务
+task browser                    # 浏览器自动化
+task db:mysql                   # MySQL 数据库操作
+task storage:s3                 # S3 存储操作
+task test:api                   # API 测试
+task deploy:k8s:helm:myapp      # Kubernetes Helm 部署
+
+# 运行功能性任务
+task scripts:data:etl           # 运行 ETL 数据处理
+task scripts:devops:diagnose-db # 数据库诊断
+task scripts:infra:k8s          # Kubernetes 管理
 ```
 
 ### 单独运行脚本
@@ -136,6 +154,44 @@ just format               # justfile 格式化 + ruff 检查修复
 uvx ruff check --fix .    # Python 代码检查（ruff）
 ```
 
+## Taskfile.yml 约定
+
+所有 Taskfile.yml 文件遵循以下模式：
+
+1. **includes 结构** - 包含子目录的 Taskfile.yml：
+   ```yaml
+   includes:
+     mysql:
+       taskfile: ./mysql/Taskfile.yml
+       aliases:
+         - mysql
+     postgresql:
+       taskfile: ./postgresql/Taskfile.yml
+       aliases:
+         - pg
+         - postgres
+   ```
+
+2. **任务定义** - 定义可执行的任务：
+   ```yaml
+   tasks:
+     default:
+       desc: 默认任务描述
+       cmds:
+         - echo "Hello, world!"
+     migrate:
+       desc: 运行数据库迁移
+       cmds:
+         - bash migrate.sh
+   ```
+
+3. **别名系统** - 为任务提供快捷方式：
+   ```yaml
+   aliases:
+     - mysql      # 主别名
+     - mariadb    # 额外别名
+   ```
+
 ## Python 脚本约定
 
 所有 Python 脚本遵循以下模式：
@@ -175,6 +231,76 @@ main
 rollback_001.sql          # 对应的回滚文件
 ```
 
+## Task 任务系统
+
+### 任务层次结构
+
+项目使用 Taskfile.yml 文件定义任务层次结构：
+
+```
+task --list | head -10
+├── browser (aliases: browser)
+├── ci (aliases: ci)
+├── cron (aliases: cron)
+├── data (aliases: data)
+├── db (aliases: db)
+├── deploy (aliases: deploy)
+├── docs (aliases: docs)
+├── examples (aliases: examples)
+├── mq (aliases: mq)
+└── ops (aliases: ops)
+```
+
+### 子目录任务
+
+每个主要目录都有其子目录任务：
+
+```bash
+# 数据库任务
+task db:mysql                 # MySQL 数据库
+task db:postgresql            # PostgreSQL 数据库
+task db:mongodb               # MongoDB 数据库
+task db:redis                 # Redis 缓存
+task db:elasticsearch         # Elasticsearch 搜索
+
+# 存储任务
+task storage:s3               # S3 对象存储
+task storage:minio            # MinIO 对象存储
+task storage:file-tools       # 文件处理工具
+
+# 测试任务
+task test:api                 # API 测试
+task test:integration         # 集成测试
+task test:load                # 性能测试
+task test:fixtures            # 测试数据
+
+# 部署任务
+task deploy:k8s:helm:myapp    # Kubernetes Helm 应用
+task deploy:compose           # Docker Compose
+task deploy:dockerfiles       # Docker 镜像构建
+```
+
+### 功能性任务
+
+除了目录任务，还有各种功能性任务：
+
+```bash
+# 数据处理
+task scripts:data:etl         # 运行 ETL 脚本
+task scripts:data:clean       # 清理数据
+task scripts:data:transfer      # 数据转移
+
+# 运维工具
+task scripts:devops:diagnose-db  # 数据库诊断
+task scripts:devops:generate-token # 生成 Token
+task scripts:devops:reset-cache   # 重置缓存
+
+# 基础设施
+task scripts:infra:k8s        # Kubernetes 管理
+task scripts:infra:docker     # Docker 操作
+task scripts:infra:helm       # Helm 操作
+```
+
 ## 部署
 
 ### Docker Compose
@@ -199,3 +325,39 @@ kubectl apply -k deploy/k8s/overlays/prod
 - `.env` 及其变体已被 gitignore — 永远不要提交密钥
 - 数据库配置使用 `MYSQL_*`、`POSTGRES_*` 等环境变量
 - 调试模式：`DEBUG=true` 启用详细日志
+
+## Task 使用技巧
+
+### 查看任务层次
+```bash
+# 查看所有任务
+task --list
+
+# 查看特定前缀的任务
+task --list | grep "db:"
+task --list | grep "storage:"
+```
+
+### 运行任务
+```bash
+# 运行顶层任务
+task browser
+task db:mysql
+task storage:s3
+
+# 运行功能性任务
+task scripts:data:etl
+task scripts:devops:diagnose-db
+
+# 使用别名
+task mysql      # 等同于 task db:mysql
+task s3         # 等同于 task storage:s3
+task api        # 等同于 task test:api
+```
+
+### 任务开发
+当添加新任务时，确保：
+1. 在正确的目录创建或更新 Taskfile.yml
+2. 包含适当的 includes 和 aliases
+3. 定义清晰的任务描述
+4. 测试任务是否正常工作

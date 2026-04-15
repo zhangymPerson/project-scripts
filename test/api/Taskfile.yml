@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+vars:
+  GREETING: Hello, world!
+includes:
+  scripts:
+    taskfile: ./scripts/Taskfile.yml
+    aliases:
+      - scripts
+  http:
+    taskfile: ./http/Taskfile.yml
+    aliases:
+      - http
+tasks:
+  default:
+    desc: Print a greeting message
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true

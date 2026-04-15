@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+vars:
+  GREETING: Hello, world!
+includes:
+  kafka:
+    taskfile: ./kafka/Taskfile.yml
+    aliases:
+      - kafka
+  rabbitmq:
+    taskfile: ./rabbitmq/Taskfile.yml
+    aliases:
+      - rabbit
+  redis-streams:
+    taskfile: ./redis-streams/Taskfile.yml
+    aliases:
+      - redis
+      - streams
+tasks:
+  default:
+    desc: Print a greeting message
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true

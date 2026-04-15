@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+vars:
+  GREETING: Hello, world!
+includes:
+  s3:
+    taskfile: ./s3/Taskfile.yml
+    aliases:
+      - s3
+  minio:
+    taskfile: ./minio/Taskfile.yml
+    aliases:
+      - minio
+  file-tools:
+    taskfile: ./file-tools/Taskfile.yml
+    aliases:
+      - file-tools
+tasks:
+  default:
+    desc: Print a greeting message
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true

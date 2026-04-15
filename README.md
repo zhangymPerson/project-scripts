@@ -14,6 +14,7 @@
 
 - Python 3.11+（推荐安装 [uv](https://github.com/astral-sh/uv)）
 - Bash 5.0+
+- [Task](https://taskfile.dev/)（任务运行器）
 - [just](https://github.com/casey/just)（可选，更好的任务运行器）
 
 ### 克隆项目
@@ -23,18 +24,54 @@ git clone <your-repo>/project-scripts.git
 cd project-scripts
 ```
 
-### 使用示例
+### 使用 Task 命令
 
 ```bash
-# 运行 Python 脚本（uv 自动管理依赖）
-uv run db/mysql/migrate.sh
+# 查看所有可用任务
+task --list
 
-# 运行 Shell 脚本
-bash ops/diagnose_db.py
+# 运行特定任务
+task browser                    # 浏览器自动化
+task db:mysql                 # MySQL 数据库操作
+task storage:s3               # S3 存储操作
+task test:api                 # API 测试
+task deploy:k8s:helm:myapp    # Kubernetes Helm 部署
+task scripts:data:etl         # 运行 ETL 数据处理
+```
 
-# 使用 just（如果有 justfile）
-just db-migrate
-just test-api
+### 使用 just 命令（如果有 justfile）
+
+```bash
+# 查看 just 任务
+just
+
+# 常用 just 命令
+just format                   # 格式化代码
+```
+
+### 单独运行脚本
+
+**Python 脚本**使用 PEP 723 内联依赖声明，通过 `uv run` 运行：
+
+```bash
+# 浏览器自动化
+uv run browser/browser_example_baidu.py
+
+# 数据库操作
+uv run db/mysql/example_mysql.py connect
+uv run db/mysql/example_mysql.py tables
+uv run ops/generate_token.py
+
+# 运维工具
+uv run ops/diagnose_db.py
+```
+
+**Shell 脚本**自包含（不 source 外部文件）：
+
+```bash
+bash db/mysql/migrate.sh
+bash examples/shell/example.sh
+DEBUG=true bash examples/shell/example.sh
 ```
 
 ## 📁 目录结构
@@ -170,30 +207,75 @@ Authorization: Bearer {{token}}
 | [project-scripts-design.md](./project-scripts-design.md) | 详细设计指南 |
 | [docs/runbook.md](./docs/runbook.md)                     | 操作手册     |
 | [docs/architecture.md](./docs/architecture.md)           | 架构说明     |
+| [AGENTS.md](./AGENTS.md)                                 | AI 助手指南  |
 | [examples/](./examples/)                                 | 代码样例     |
 
 ## 🔧 常用命令
 
+### Task 命令
+
 ```bash
+# 查看所有任务
+task --list
+
 # 浏览器自动化
-just -f browser/justfile mac-start-edge    # 启动 Edge 浏览器（Playwright 调试模式）
-just -f browser/justfile baidu            # 运行百度搜索示例
+task browser                    # 浏览器自动化
+task browser:default          # 默认浏览器任务
 
-# 数据库迁移
-uv run db/mysql/migrate.sh
+# 数据库操作
+task db:mysql                 # MySQL 数据库
+task db:postgresql            # PostgreSQL 数据库
+task db:mongodb               # MongoDB 数据库
+task db:redis                 # Redis 缓存
+task db:elasticsearch         # Elasticsearch 搜索
+task db:sqlite                # SQLite 轻量数据库
 
-# API 测试
-just test-api
+# 存储操作
+task storage:s3               # S3 对象存储
+task storage:minio            # MinIO 对象存储
+task storage:file-tools       # 文件处理工具
+
+# 消息队列
+task mq:rabbitmq              # RabbitMQ 消息队列
+task mq:kafka                 # Kafka 消息队列
+task mq:redis-streams         # Redis Streams
+
+# 测试
+task test:api                 # API 测试
+task test:integration         # 集成测试
+task test:load                # 性能测试
+task test:fixtures            # 测试数据
+
+# 数据处理
+task data:clean               # 数据清洗
+task data:etl                 # ETL 处理
+task data:transfer            # 数据转移
 
 # 部署
-kubectl apply -k deploy/k8s/overlays/prod
+task deploy:k8s:helm:myapp    # Kubernetes Helm 应用
+task deploy:compose           # Docker Compose
+task deploy:dockerfiles       # Docker 镜像构建
 
-# 运行 E2E 测试
-cd test/e2e/playwright && npx playwright test
+# 运维工具
+task ops:default              # 运维工具
+task scripts:devops:diagnose-db  # 数据库诊断
+task scripts:data:etl         # 运行 ETL 脚本
 
-# 视觉回归测试
-uv run test/visual/capture.py
-uv run test/visual/compare.py
+# 脚本工具
+task scripts:data:clean       # 清理数据
+task scripts:infra:k8s        # Kubernetes 管理
+```
+
+### just 命令（如果有 justfile）
+
+```bash
+# 格式化代码
+just format
+
+# Git 操作
+just fetch
+just pull
+just push
 ```
 
 ## 📋 与其他方案对比
@@ -211,6 +293,18 @@ uv run test/visual/compare.py
 
 从你需要的开始。空目录不要创建，结构是"长出来的"，不是"一次建好的"。
 
+**Q: 如何使用 Task 命令？**
+
+```bash
+# 查看所有可用任务
+task --list
+
+# 运行特定任务
+task db:mysql                 # MySQL 数据库操作
+task storage:s3               # S3 存储操作
+task test:api                 # API 测试
+```
+
 **Q: 如何在团队中推广？**
 
 1. 先在一个项目里跑通
@@ -221,6 +315,16 @@ uv run test/visual/compare.py
 
 - `cron/jobs/`：周期性、自动化（每天备份）
 - `ops/`：按需、手动（诊断、紧急修复）
+
+**Q: Taskfile.yml 文件的作用是什么？**
+
+Taskfile.yml 文件用于定义和管理项目中的各种自动化任务。每个目录都有一个 Taskfile.yml 文件，可以包含子目录的任务引用和别名，形成完整的任务层次结构。
+
+```bash
+# 示例：查看任务层次
+task --list | head -20
+# 显示所有可用的任务及其别名
+```
 
 ## 🎯 总结
 
@@ -234,6 +338,7 @@ uv run test/visual/compare.py
 | 叶子即执行 | 最底层包含完整上下文                  |
 | 脚本自包含 | Python 内联依赖，Shell 不 source 外部 |
 | 配置外置   | 敏感信息走环境变量                    |
+| 任务驱动   | 使用 Taskfile.yml 管理所有操作        |
 
 ## 📄 许可证
 

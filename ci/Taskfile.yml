@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+vars:
+  GREETING: Hello, world!
+includes:
+  github-actions:
+    taskfile: ./github-actions/Taskfile.yml
+    aliases:
+      - gh
+      - actions
+  gitlab-ci:
+    taskfile: ./gitlab-ci/Taskfile.yml
+    aliases:
+      - gl
+      - gitlab
+  jenkins:
+    taskfile: ./jenkins/Taskfile.yml
+    aliases:
+      - jenkins
+  shared:
+    taskfile: ./shared/Taskfile.yml
+    aliases:
+      - shared
+tasks:
+  default:
+    desc: Print a greeting message
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true

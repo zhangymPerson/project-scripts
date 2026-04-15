@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+vars:
+  GREETING: Hello, world!
+includes:
+  mysql:
+    taskfile: ./mysql/Taskfile.yml
+    aliases:
+      - mysql
+  postgresql:
+    taskfile: ./postgresql/Taskfile.yml
+    aliases:
+      - pg
+      - postgres
+  mongodb:
+    taskfile: ./mongodb/Taskfile.yml
+    aliases:
+      - mongo
+  elasticsearch:
+    taskfile: ./elasticsearch/Taskfile.yml
+    aliases:
+      - es
+  redis:
+    taskfile: ./redis/Taskfile.yml
+    aliases:
+      - redis
+  sqlite:
+    taskfile: ./sqlite/Taskfile.yml
+    aliases:
+      - sqlite
+tasks:
+  default:
+    desc: Print a greeting message
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true

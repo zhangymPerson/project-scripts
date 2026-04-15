@@ -3,6 +3,59 @@
 version: '3'
 vars:
   GREETING: Hello, world!
+includes:
+  browser:
+    taskfile: ./browser/Taskfile.yml
+    aliases:
+      - browser
+  ci:
+    taskfile: ./ci/Taskfile.yml
+    aliases:
+      - ci
+  cron:
+    taskfile: ./cron/Taskfile.yml
+    aliases:
+      - cron
+  data:
+    taskfile: ./data/Taskfile.yml
+    aliases:
+      - data
+  db:
+    taskfile: ./db/Taskfile.yml
+    aliases:
+      - db
+  deploy:
+    taskfile: ./deploy/Taskfile.yml
+    aliases:
+      - deploy
+  docs:
+    taskfile: ./docs/Taskfile.yml
+    aliases:
+      - docs
+  examples:
+    taskfile: ./examples/Taskfile.yml
+    aliases:
+      - examples
+  mq:
+    taskfile: ./mq/Taskfile.yml
+    aliases:
+      - mq
+  ops:
+    taskfile: ./ops/Taskfile.yml
+    aliases:
+      - ops
+  scripts:
+    taskfile: ./scripts/Taskfile.yml
+    aliases:
+      - scripts
+  storage:
+    taskfile: ./storage/Taskfile.yml
+    aliases:
+      - storage
+  test:
+    taskfile: ./test/Taskfile.yml
+    aliases:
+      - test
 tasks:
   default:
     desc: Print a greeting message
