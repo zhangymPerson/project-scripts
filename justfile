@@ -93,6 +93,10 @@ push:
     git push gitcode main
     git push gitee main
 
+# 创建项目软连接到 home/.project 目录
+symlink-project:
+    @nu {{ justfile_directory() }}/symlink_project.nu
+
 # 创建 tmux 窗口
 tmux:
     #!/usr/bin/env sh
