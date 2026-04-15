@@ -28,11 +28,11 @@ set -o pipefail # 管道中任一命令失败则整体失败
 #   log "多" "个" "参" "数"
 #   log "变量值：$VAR"
 log() {
-    if command -v gum >/dev/null 2>&1; then
-        gum log -l info -t datetime "$@"
-    else
-        echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] $*"
-    fi
+  if command -v gum >/dev/null 2>&1; then
+    gum log -l info -t datetime "$@"
+  else
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] $*"
+  fi
 }
 
 # =============================================================================
@@ -40,12 +40,12 @@ log() {
 # =============================================================================
 
 main() {
-    log "脚本开始执行"
-    log "hello world"
-    log "这是一条日志消息"
-    log "脚本执行完成"
+  log "脚本开始执行"
+  log "hello world"
+  log "这是一条日志消息"
+  log "脚本执行完成"
 
-    exit 0
+  exit 0
 }
 
 main "$@"

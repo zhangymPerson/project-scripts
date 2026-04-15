@@ -211,8 +211,7 @@ paths:
                   Connection: close
                   Content-Length: "262"
                   Content-Type: >-
-                    multipart/form-data;
-                    boundary=--------------------------497528158241070250470018
+                    multipart/form-data; boundary=--------------------------497528158241070250470018
                   Host: httpbin.apifox.com
                   User-Agent: apifox/1.0.0 (https://www.apifox.cn)
                 json: null
@@ -330,8 +329,7 @@ paths:
                   Connection: close
                   Content-Length: "262"
                   Content-Type: >-
-                    multipart/form-data;
-                    boundary=--------------------------519039062991114527357557
+                    multipart/form-data; boundary=--------------------------519039062991114527357557
                   Host: httpbin.apifox.com
                   User-Agent: apifox/1.0.0 (https://www.apifox.cn)
                 json: null
@@ -1573,8 +1571,7 @@ paths:
   /cache:
     get:
       summary: >-
-        Returns a 304 if an If-Modified-Since header or If-None-Match is
-        present. Returns the same as a GET otherwise.
+        Returns a 304 if an If-Modified-Since header or If-None-Match is present. Returns the same as a GET otherwise.
       deprecated: false
       description: ""
       tags:
@@ -1637,8 +1634,7 @@ paths:
   /etag/{etag}:
     get:
       summary: >-
-        Assumes the resource has the given etag and responds to If-None-Match
-        and If-Match headers appropriately.
+        Assumes the resource has the given etag and responds to If-None-Match and If-Match headers appropriately.
       deprecated: false
       description: ""
       tags:
@@ -2158,8 +2154,7 @@ paths:
   /cookies/delete:
     get:
       summary: >-
-        Deletes cookie(s) as provided by the query string and redirects to
-        cookie list.
+        Deletes cookie(s) as provided by the query string and redirects to cookie list.
       deprecated: false
       description: ""
       tags:

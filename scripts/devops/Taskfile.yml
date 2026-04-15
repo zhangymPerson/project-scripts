@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+vars:
+  PYTHON: python3
+tasks:
+  default:
+    desc: List available devops tasks
+    cmds:
+      - task --list
+    silent: true
+  diagnose-db:
+    desc: Diagnose database connections and health
+    cmds:
+      - "{{.PYTHON}} ../../ops/diagnose_db.py"
+  check-connections:
+    desc: Check all service connections
+    cmds:
+      - "{{.PYTHON}} ../../ops/check_connections.py"
+  reset-cache:
+    desc: Reset application cache
+    cmds:
+      - "{{.PYTHON}} ../../ops/reset_cache.py"
+  generate-token:
+    desc: Generate authentication token
+    cmds:
+      - "{{.PYTHON}} ../../ops/generate_token.py"
+  help:
+    desc: Show this help message
+    cmds:
+      - task --list-all

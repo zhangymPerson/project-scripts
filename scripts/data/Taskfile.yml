@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+vars:
+  PYTHON: python3
+tasks:
+  default:
+    desc: List available data tasks
+    cmds:
+      - task --list
+    silent: true
+  etl:
+    desc: Run ETL processes
+    cmds:
+      - "{{.PYTHON}} ../data/etl/csv_to_db.py"
+      - "{{.PYTHON}} ../data/etl/api_sync.py"
+  clean:
+    desc: Clean and deduplicate data
+    cmds:
+      - "{{.PYTHON}} ../data/clean/clean_users.py"
+      - "{{.PYTHON}} ../data/clean/deduplicate.py"
+  transfer:
+    desc: Transfer data between systems
+    cmds:
+      - "{{.PYTHON}} ../data/transfer/mysql_to_pg.py"
+      - "{{.PYTHON}} ../data/transfer/export_table.py"
+  help:
+    desc: Show this help message
+    cmds:
+      - task --list-all

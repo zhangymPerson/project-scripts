@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+tasks:
+  default:
+    desc: List available infrastructure tasks
+    cmds:
+      - task --list
+    silent: true
+  k8s:
+    desc: Manage Kubernetes deployments
+    cmds:
+      - echo "Kubernetes deployment scripts"
+      - kubectl apply -f ../deploy/k8s/base/
+  docker:
+    desc: Build and manage Docker images
+    cmds:
+      - docker build -t myapp:latest ../deploy/dockerfiles/
+      - docker-compose -f ../deploy/compose/docker-compose.dev.yml up -d
+  ci-cd:
+    desc: CI/CD pipeline operations
+    cmds:
+      - echo "CI/CD pipeline management"
+  helm:
+    desc: Helm chart operations
+    cmds:
+      - helm upgrade --install myapp ../deploy/k8s/helm/myapp/
+  help:
+    desc: Show this help message
+    cmds:
+      - task --list-all
