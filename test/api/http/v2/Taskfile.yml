@@ -7,5 +7,6 @@ tasks:
   default:
     desc: Print a greeting message
     cmds:
-      - echo "{{.GREETING}}"
+      - pwd
+      - ls
     silent: true

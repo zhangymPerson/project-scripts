@@ -3,26 +3,34 @@
 version: '3'
 vars:
   GREETING: Hello, world!
+# 配置 includes，通过 dir 指定子目录路径
 includes:
+  # 给子 Taskfile 起别名（如 included），dir 指向子目录
   data:
-    taskfile: ./data/Taskfile.yml
+    taskfile: ./data/Taskfile.yml # 子 Taskfile 路径
+    dir: ./data # 该 Taskfile 所在目录（关键）
     aliases:
       - data
   infra:
     taskfile: ./infra/Taskfile.yml
+    dir: ./infra
     aliases:
       - infra
   utils:
     taskfile: ./utils/Taskfile.yml
+    dir: ./utils
     aliases:
       - utils
   devops:
     taskfile: ./devops/Taskfile.yml
+    dir: ./devops
     aliases:
       - devops
 tasks:
   default:
-    desc: Print a greeting message
+    desc: 数据处理 基础设施 工具函数 DevOps 脚本
+    dir: . # 强制在当前 Taskfile 所在目录（scripts/）执行
     cmds:
-      - echo "{{.GREETING}}"
+      - pwd # 验证：输出会是 .../project-scripts/scripts/
+      - ls # 只会列出 scripts/ 下的文件
     silent: true

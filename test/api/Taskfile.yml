@@ -3,18 +3,24 @@
 version: '3'
 vars:
   GREETING: Hello, world!
+# 配置 includes，通过 dir 指定子目录路径
 includes:
+  # 给子 Taskfile 起别名（如 included），dir 指向子目录
   scripts:
-    taskfile: ./scripts/Taskfile.yml
+    taskfile: ./scripts/Taskfile.yml # 子 Taskfile 路径
+    dir: ./scripts # 该 Taskfile 所在目录（关键）
     aliases:
       - scripts
   http:
     taskfile: ./http/Taskfile.yml
+    dir: ./http
     aliases:
       - http
 tasks:
   default:
-    desc: Print a greeting message
+    desc: API 测试脚本 HTTP 接口测试
+    dir: . # 强制在当前 Taskfile 所在目录（test/api/）执行
     cmds:
-      - echo "{{.GREETING}}"
+      - pwd # 验证：输出会是 .../project-scripts/test/api/
+      - ls # 只会列出 test/api/ 下的文件
     silent: true

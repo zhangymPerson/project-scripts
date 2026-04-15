@@ -3,62 +3,79 @@
 version: '3'
 vars:
   GREETING: Hello, world!
+# 配置 includes，通过 dir 指定子目录路径
 includes:
+  # 给子 Taskfile 起别名（如 included），dir 指向子目录
   browser:
-    taskfile: ./browser/Taskfile.yml
+    taskfile: ./browser/Taskfile.yml # 子 Taskfile 路径
+    dir: ./browser # 该 Taskfile 所在目录（关键）
     aliases:
       - browser
   ci:
     taskfile: ./ci/Taskfile.yml
+    dir: ./ci
     aliases:
       - ci
   cron:
     taskfile: ./cron/Taskfile.yml
+    dir: ./cron
     aliases:
       - cron
   data:
     taskfile: ./data/Taskfile.yml
+    dir: ./data
     aliases:
       - data
   db:
     taskfile: ./db/Taskfile.yml
+    dir: ./db
     aliases:
       - db
   deploy:
     taskfile: ./deploy/Taskfile.yml
+    dir: ./deploy
     aliases:
       - deploy
   docs:
     taskfile: ./docs/Taskfile.yml
+    dir: ./docs
     aliases:
       - docs
   examples:
     taskfile: ./examples/Taskfile.yml
+    dir: ./examples
     aliases:
       - examples
   mq:
     taskfile: ./mq/Taskfile.yml
+    dir: ./mq
     aliases:
       - mq
   ops:
     taskfile: ./ops/Taskfile.yml
+    dir: ./ops
     aliases:
       - ops
   scripts:
     taskfile: ./scripts/Taskfile.yml
+    dir: ./scripts
     aliases:
       - scripts
   storage:
     taskfile: ./storage/Taskfile.yml
+    dir: ./storage
     aliases:
       - storage
   test:
     taskfile: ./test/Taskfile.yml
+    dir: ./test
     aliases:
       - test
 tasks:
   default:
-    desc: Print a greeting message
+    desc: project-scripts 项目支撑脚本仓库
+    dir: . # 强制在当前 Taskfile 所在目录（根目录）执行
     cmds:
-      - echo "{{.GREETING}}"
+      - pwd # 验证：输出会是 /Users/zhangyanming/person/project/person/project-scripts/
+      - ls # 只会列出根目录下的文件
     silent: true
