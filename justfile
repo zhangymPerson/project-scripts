@@ -1,6 +1,6 @@
 # https://just.systems
 
-set unstable := true
+set unstable
 set shell := ["nu", "-c"]
 
 # 默认任务 - 显示所有可用任务列表
