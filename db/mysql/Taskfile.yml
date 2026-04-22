@@ -1,8 +1,14 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 
-version: '3'
+version: "3"
+
 vars:
-  GREETING: Hello, world!
+  MYSQL_HOST: '{{.MYSQL_HOST | default "localhost"}}'
+  MYSQL_PORT: '{{.MYSQL_PORT | default "3306"}}'
+  MYSQL_USER: '{{.MYSQL_USER | default "root"}}'
+  MYSQL_PASSWORD: '{{.MYSQL_PASSWORD | default "password"}}'
+  MYSQL_DATABASE: '{{.MYSQL_DATABASE | default "test_db"}}'
+
 tasks:
   default:
     desc: Print a greeting message
@@ -10,3 +16,38 @@ tasks:
       - pwd
       - ls
     silent: true
+
+  tables:
+    desc: 使用 fzf 筛选数据库表名
+    silent: true
+    cmds:
+      - |
+        echo "数据库连接信息: {{ .MYSQL_USER }}@{{ .MYSQL_HOST }}:{{ .MYSQL_PORT }}/{{ .MYSQL_DATABASE }}"
+        # uv run mysql-info.py tables
+        TABLES=$(uv run mysql-info.py tables 2>/dev/null | sed 's/^  - //')
+        if [ -z "$TABLES" ]; then
+          echo "未获取到表格信息，请检查数据库连接和权限"
+          exit 1
+        fi
+        TABLE=$(echo "$TABLES" | fzf --prompt="MySQL 表> " --height=40% --layout=reverse)
+        if [ -n "$TABLE" ]; then
+          echo "已选择表: $TABLE"
+        fi
+
+  create-table:
+    desc: 使用 gum input 输入表名，查看建表语句
+    silent: true
+    cmds:
+      - |
+        echo "数据库连接信息: {{ .MYSQL_USER }}@{{ .MYSQL_HOST }}:{{ .MYSQL_PORT }}/{{ .MYSQL_DATABASE }}"
+        # uv run mysql-info.py tables
+        TABLES=$(uv run mysql-info.py tables 2>/dev/null | sed 's/^  - //')
+        if [ -z "$TABLES" ]; then
+          echo "未获取到表格信息，请检查数据库连接和权限"
+          exit 1
+        fi
+        TABLE=$(echo "$TABLES" | fzf --prompt="MySQL 表> " --height=40% --layout=reverse)
+        if [ -n "$TABLE" ]; then
+          echo "已选择表: $TABLE"
+          uv run mysql-info.py create-table --table "$TABLE"
+        fi
