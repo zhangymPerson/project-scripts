@@ -44,3 +44,47 @@ tasks:
           echo "已选择索引: $INDEX"
           uv run es-info.py mapping --index "$INDEX"
         fi
+  query:
+    desc: 使用 fzf 选择索引，gum write 输入查询条件，执行 ES 检索
+    silent: true
+    cmds:
+      - |
+        echo "ES 连接信息: {{ .ES_URL }}"
+        INDICES=$(uv run es-info.py indices 2>/dev/null | grep -vE '共.*个索引|列说明' | awk '{$1=$1};1' | awk '{print $NF}')
+        if [ -z "$INDICES" ]; then
+          echo "未获取到索引信息，请检查 ES 连接"
+          exit 1
+        fi
+        INDEX=$(echo "$INDICES" | fzf --prompt="ES 索引> " --height=40% --layout=reverse)
+        if [ -z "$INDEX" ]; then
+          echo "未选择索引"
+          exit 1
+        fi
+        echo "已选择索引: $INDEX"
+        echo ""
+        echo "常用查询条件参考:"
+        echo '  全部数据:     {"match_all": {}}'
+        echo '  精确匹配:     {"term": {"field": "value"}}'
+        echo '  全文检索:     {"match": {"field": "关键词"}}'
+        echo '  通配符:       {"wildcard": {"field": "*pattern*"}}'
+        echo '  范围查询:     {"range": {"field": {"gte": 10, "lte": 100}}}'
+        echo '  多条件AND:    {"bool": {"must": [{"term": {"a": "1"}}, {"term": {"b": "2"}}]}}'
+        echo '  多条件OR:     {"bool": {"should": [{"term": {"a": "1"}}, {"term": {"b": "2"}}]}}'
+        echo '  排除条件:     {"bool": {"must": [{"match": {"title": "test"}}], "must_not": [{"term": {"status": "deleted"}}]}}'
+        echo ""
+        QUERY=$(gum write --placeholder='输入 ES 查询 JSON，如 {"match_all": {}}' --prompt="Query> " --height=10)
+        if [ -z "$QUERY" ]; then
+          echo "未输入查询条件"
+          exit 1
+        fi
+        uv run es-info.py query --index "$INDEX" --query "$QUERY" | fzf
+  es-info-help:
+    desc: |
+      查看 es-info.py 帮助信息 (TASK_CMD=indices|mapping|query 查看子命令帮助 ) 执行命令: task db:es:es-info-help TASK_CMD=query
+    cmds:
+      - |
+        if [ -n "{{ .TASK_CMD }}" ]; then
+          uv run es-info.py {{ .TASK_CMD }} --help
+        else
+          uv run es-info.py --help
+        fi

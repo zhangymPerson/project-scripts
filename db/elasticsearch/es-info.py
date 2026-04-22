@@ -27,14 +27,15 @@ Elasticsearch 索引信息查询脚本（兼容 ES 7.x）
 # ]
 # ///
 
+import json
 import os
 import re
 import sys
 from pathlib import Path
 
+import typer
 from elasticsearch7 import Elasticsearch
 from loguru import logger
-import typer
 from typer import Typer
 
 # =============================================================================
@@ -74,6 +75,7 @@ logger.add(
 # ES 连接管理
 # =============================================================================
 
+
 def _normalize_es_url(url: str) -> str:
     """将用户输入的地址规范化为完整 URL
 
@@ -102,6 +104,7 @@ def _get_es_client() -> Elasticsearch:
     logger.debug(f"ES 连接: {es_url}")
     return client
 
+
 # =============================================================================
 # 白名单校验
 # =============================================================================
@@ -112,12 +115,16 @@ _INDEX_NAME_PATTERN = re.compile(r"^[a-zA-Z0-9_\-.+]{1,255}$")
 def _validate_index_name(name: str) -> str:
     """校验索引名合法性"""
     if not _INDEX_NAME_PATTERN.match(name):
-        raise ValueError(f"非法索引名: {name!r}，仅允许字母、数字、下划线、连字符、点号、加号")
+        raise ValueError(
+            f"非法索引名: {name!r}，仅允许字母、数字、下划线、连字符、点号、加号"
+        )
     return name
+
 
 # =============================================================================
 # 核心函数
 # =============================================================================
+
 
 def get_indices() -> list[dict]:
     """获取 ES 所有索引信息列表
@@ -159,11 +166,39 @@ def get_index_mapping(index_name: str) -> dict:
         client.close()
         logger.debug("ES 连接已关闭")
 
+
+def search_index(index_name: str, query: dict, size: int = 10) -> dict:
+    """在指定索引中执行搜索查询
+
+    Args:
+        index_name: 索引名
+        query: ES DSL query 字典
+        size: 返回文档数量 (默认: 10)
+
+    Returns:
+        ES 搜索结果字典
+    """
+    safe_name = _validate_index_name(index_name)
+    client = _get_es_client()
+    try:
+        body = {"query": query, "size": size}
+        result = client.search(index=safe_name, body=body)
+        hits = result["hits"]["hits"]
+        total = result["hits"]["total"]
+        total_value = total["value"] if isinstance(total, dict) else total
+        logger.info(f"搜索完成: 命中 {total_value} 条, 返回 {len(hits)} 条")
+        return result
+    finally:
+        client.close()
+        logger.debug("ES 连接已关闭")
+
+
 # =============================================================================
 # 命令行接口
 # =============================================================================
 
-app = Typer(help="""Elasticsearch 索引信息查询脚本（兼容 ES 7.x）
+app = Typer(
+    help="""Elasticsearch 索引信息查询脚本（兼容 ES 7.x）
 
 环境变量 (设置 ES 连接):
     ES_URL       ES 完整地址，支持 ip:port 或完整 URL 格式
@@ -173,7 +208,8 @@ app = Typer(help="""Elasticsearch 索引信息查询脚本（兼容 ES 7.x）
                  (默认: http://localhost:9200)
     ES_USER      ES 用户名 (默认: 空，不鉴权)
     ES_PASSWORD  ES 密码 (默认: 空)
-""")
+"""
+)
 
 
 @app.command()
@@ -209,11 +245,72 @@ def mapping(
         uv run db/elasticsearch/es-info.py mapping --index my_index
         uv run db/elasticsearch/es-info.py mapping -i my_index
     """
-    import json
 
     try:
         result = get_index_mapping(index)
         print(json.dumps(result, indent=2, ensure_ascii=False))
+    except ValueError as e:
+        logger.error(str(e))
+        raise typer.Exit(code=1)
+    except Exception as e:
+        logger.error(f"ES 错误: {e}")
+        logger.debug(f"ES 错误: {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def query(
+    index: str = typer.Option(..., "--index", "-i", help="索引名"),
+    q: str = typer.Option(..., "--query", "-q", help="ES DSL query JSON"),
+    size: int = typer.Option(10, "--size", "-s", help="返回文档数量"),
+):
+    """在指定索引中执行搜索查询
+
+    示例 — 获取索引 users 全部数据 (最多100条):
+        uv run db/elasticsearch/es-info.py query -i users -q '{"match_all": {}}' -s 100
+
+    单条件查询 — 精确匹配:
+        uv run db/elasticsearch/es-info.py query -i users -q '{"term": {"status": "active"}}'
+
+    单条件查询 — 全文检索:
+        uv run db/elasticsearch/es-info.py query -i users -q '{"match": {"name": "张三"}}'
+
+    单条件查询 — 通配符:
+        uv run db/elasticsearch/es-info.py query -i users -q '{"wildcard": {"email": "*@gmail.com"}}'
+
+    单条件查询 — 范围查询:
+        uv run db/elasticsearch/es-info.py query -i users -q '{"range": {"age": {"gte": 18, "lte": 30}}}'
+
+    多条件查询 — must (AND):
+        uv run db/elasticsearch/es-info.py query -i users -q '{"bool": {"must": [{"term": {"status": "active"}}, {"range": {"age": {"gte": 20}}}]}}'
+
+    多条件查询 — should (OR):
+        uv run db/elasticsearch/es-info.py query -i users -q '{"bool": {"should": [{"term": {"city": "北京"}}, {"term": {"city": "上海"}}]}}'
+
+    多条件查询 — must + must_not:
+        uv run db/elasticsearch/es-info.py query -i users -q '{"bool": {"must": [{"match": {"title": "工程师"}}], "must_not": [{"term": {"status": "deleted"}}]}}'
+    """
+
+    try:
+        query_dict = json.loads(q)
+    except json.JSONDecodeError as e:
+        logger.error(f"query 不是合法的 JSON: {e}")
+        raise typer.Exit(code=1)
+
+    if not isinstance(query_dict, dict):
+        logger.error('query 必须是 JSON 对象，如 {"match_all": {}}')
+        raise typer.Exit(code=1)
+
+    try:
+        result = search_index(index, query_dict, size)
+        hits = result["hits"]["hits"]
+        total = result["hits"]["total"]
+        total_value = total["value"] if isinstance(total, dict) else total
+        print(f"命中 {total_value} 条, 返回 {len(hits)} 条:\n")
+        for hit in hits:
+            src = hit.get("_source", {})
+            # print(json.dumps(src, indent=2, ensure_ascii=False))
+            print(json.dumps(src, ensure_ascii=False))
     except ValueError as e:
         logger.error(str(e))
         raise typer.Exit(code=1)

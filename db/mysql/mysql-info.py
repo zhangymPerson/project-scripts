@@ -110,6 +110,24 @@ def _validate_table_name(name: str) -> str:
 # 核心函数
 # =============================================================================
 
+_SELECT_PATTERN = re.compile(r"^\s*SELECT\b", re.IGNORECASE)
+
+
+_QUERY_FORBIDDEN = re.compile(
+    r"\b(INSERT|UPDATE|DELETE|DROP|ALTER|CREATE|TRUNCATE|REPLACE|GRANT|REVOKE|LOAD|CALL|EXECUTE|HANDLER|LOCK|UNLOCK)\b",
+    re.IGNORECASE,
+)
+
+
+def _validate_select_query(sql: str) -> str:
+    """校验 SQL 必须是 SELECT 查询语句"""
+    if not _SELECT_PATTERN.match(sql):
+        raise ValueError("仅允许 SELECT 查询语句，不支持增删改等写操作")
+    if _QUERY_FORBIDDEN.search(sql):
+        raise ValueError("SQL 中包含不允许的关键字，仅允许 SELECT 查询")
+    return sql.strip()
+
+
 def get_table_names() -> list[str]:
     """获取当前数据库中所有表的表名列表
 
@@ -149,6 +167,25 @@ def get_create_table_statement(table_name: str) -> str:
         create_stmt = row[1]
         logger.info(f"获取建表语句成功: {safe_name}")
         return create_stmt
+
+def execute_select_query(sql: str) -> list[tuple]:
+    """执行 SELECT 查询语句并返回结果
+
+    Args:
+        sql: SELECT 查询语句，非查询语句会抛出 ValueError
+
+    Returns:
+        列名列表 + 数据行列表
+    """
+    safe_sql = _validate_select_query(sql)
+    with _get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(safe_sql)
+        columns = [desc[0] for desc in cursor.description] if cursor.description else []
+        rows = cursor.fetchall()
+        logger.info(f"查询执行成功，返回 {len(rows)} 行")
+        return columns, rows
+
 
 # =============================================================================
 # 命令行接口
@@ -197,6 +234,42 @@ def create_table(
     except ValueError as e:
         logger.error(str(e))
         logger.debug(f"错误: {e}")
+        raise typer.Exit(code=1)
+    except mysql.connector.Error as e:
+        logger.error(f"数据库错误: {e}")
+        logger.debug(f"数据库错误: {e}")
+        raise typer.Exit(code=1)
+
+
+@app.command("query")
+def query(
+    sql: str = typer.Option(..., "--sql", "-s", help="SELECT 查询语句"),
+):
+    """执行 SELECT 查询语句并打印结果
+
+    示例:
+        uv run db/mysql/mysql-info.py query --sql "SELECT * FROM users LIMIT 5"
+        uv run db/mysql/mysql-info.py query -s "SELECT COUNT(*) FROM users"
+    """
+    try:
+        columns, rows = execute_select_query(sql)
+        if not rows:
+            logger.debug("查询结果为空")
+            return
+        col_widths = [len(str(c)) for c in columns]
+        for row in rows:
+            for i, val in enumerate(row):
+                col_widths[i] = max(col_widths[i], len(str(val)))
+        header = " | ".join(str(c).ljust(col_widths[i]) for i, c in enumerate(columns))
+        sep = "-+-".join("-" * w for w in col_widths)
+        print(header)
+        print(sep)
+        for row in rows:
+            line = " | ".join(str(val).ljust(col_widths[i]) for i, val in enumerate(row))
+            print(line)
+        print(f"\n{len(rows)} 行")
+    except ValueError as e:
+        logger.error(str(e))
         raise typer.Exit(code=1)
     except mysql.connector.Error as e:
         logger.error(f"数据库错误: {e}")
