@@ -1,14 +1,12 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 
 version: "3"
-
 vars:
   MYSQL_HOST: '{{.MYSQL_HOST | default "localhost"}}'
   MYSQL_PORT: '{{.MYSQL_PORT | default "3306"}}'
   MYSQL_USER: '{{.MYSQL_USER | default "root"}}'
   MYSQL_PASSWORD: '{{.MYSQL_PASSWORD | default "password"}}'
   MYSQL_DATABASE: '{{.MYSQL_DATABASE | default "test_db"}}'
-
 tasks:
   default:
     desc: Print a greeting message
@@ -16,7 +14,6 @@ tasks:
       - pwd
       - ls
     silent: true
-
   tables:
     desc: 使用 fzf 筛选数据库表名
     silent: true
@@ -33,7 +30,6 @@ tasks:
         if [ -n "$TABLE" ]; then
           echo "已选择表: $TABLE"
         fi
-
   create-table:
     desc: 使用 gum input 输入表名，查看建表语句
     silent: true

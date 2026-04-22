@@ -2,7 +2,9 @@
 
 version: '3'
 vars:
-  GREETING: Hello, world!
+  ES_URL: '{{.ES_URL | default "http://localhost:9200"}}'
+  ES_USER: '{{.ES_USER | default ""}}'
+  ES_PASSWORD: '{{.ES_PASSWORD | default ""}}'
 tasks:
   default:
     desc: Print a greeting message
@@ -10,3 +12,35 @@ tasks:
       - pwd
       - ls
     silent: true
+  indices:
+    desc: 使用 fzf 筛选 ES 索引列表
+    silent: true
+    cmds:
+      - |
+        echo "ES 连接信息: {{ .ES_URL }}, user: {{ .ES_USER }}"
+        uv run es-info.py indices
+        INDICES=$(uv run es-info.py indices 2>/dev/null | grep -vE '共.*个索引|列说明' | awk '{$1=$1};1' | awk '{print $NF}')
+        if [ -z "$INDICES" ]; then
+          echo "未获取到索引信息，请检查 ES 连接"
+          exit 1
+        fi
+        INDEX=$(echo "$INDICES" | fzf --prompt="ES 索引> " --height=40% --layout=reverse)
+        if [ -n "$INDEX" ]; then
+          echo "已选择索引: $INDEX"
+        fi
+  mapping:
+    desc: 使用 fzf 选择索引，查看 mapping 结构
+    silent: true
+    cmds:
+      - |
+        echo "ES 连接信息: {{ .ES_URL }}"
+        INDICES=$(uv run es-info.py indices 2>/dev/null | grep -vE '共.*个索引|列说明' | awk '{$1=$1};1' | awk '{print $NF}')
+        if [ -z "$INDICES" ]; then
+          echo "未获取到索引信息，请检查 ES 连接"
+          exit 1
+        fi
+        INDEX=$(echo "$INDICES" | fzf --prompt="ES 索引> " --height=40% --layout=reverse)
+        if [ -n "$INDEX" ]; then
+          echo "已选择索引: $INDEX"
+          uv run es-info.py mapping --index "$INDEX"
+        fi
