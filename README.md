@@ -326,6 +326,21 @@ task --list | head -20
 # 显示所有可用的任务及其别名
 ```
 
+**Q: Taskfile.yml 中配置在当前 Taskfile.yml 所在目录执行**
+
+需配置
+```yaml
+# 子任务目录中的 Taskfile.yml
+version: '3'
+
+tasks:
+  your-task:
+    dir: '{{.TASKFILE_DIR}}'
+    cmds:
+      - echo "当前目录是：$(pwd)"
+      - # 你的其他命令
+```
+
 ## 🎯 总结
 
 核心思想：**按职责域组织目录，每个目录是一个完整的"做事单元"**。

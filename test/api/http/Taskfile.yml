@@ -24,7 +24,7 @@ includes:
 tasks:
   default:
     desc: HTTP API v1 v2 共享组件测试
-    dir: . # 强制在当前 Taskfile 所在目录（test/api/http/）执行
+    dir: '{{.TASKFILE_DIR}}' # 强制在当前 Taskfile 所在目录（test/api/http/）执行
     cmds:
       - pwd # 验证：输出会是 .../project-scripts/test/api/http/
       - ls # 只会列出 test/api/http/ 下的文件

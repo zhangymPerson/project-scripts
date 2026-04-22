@@ -25,7 +25,7 @@ includes:
 tasks:
   default:
     desc: Kafka RabbitMQ Redis Streams 消息队列管理
-    dir: . # 强制在当前 Taskfile 所在目录（mq/）执行
+    dir: '{{.TASKFILE_DIR}}' # 强制在当前 Taskfile 所在目录（mq/）执行
     cmds:
       - pwd # 验证：输出会是 .../project-scripts/mq/
       - ls # 只会列出 mq/ 下的文件

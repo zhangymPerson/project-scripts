@@ -74,7 +74,7 @@ includes:
 tasks:
   default:
     desc: project-scripts 项目支撑脚本仓库
-    dir: . # 强制在当前 Taskfile 所在目录（根目录）执行
+    dir: '{{.TASKFILE_DIR}}' # 强制在当前 Taskfile 所在目录（根目录）执行
     cmds:
       - pwd # 验证：输出会是 /Users/zhangyanming/person/project/person/project-scripts/
       - ls # 只会列出根目录下的文件
