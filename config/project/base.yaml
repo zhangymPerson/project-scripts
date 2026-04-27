@@ -1,0 +1,44 @@
+# 基础配置（所有环境继承此配置）
+# 定义通用变量和服务模板
+
+variables:
+  # 应用配置
+  app:
+    name: "myapp"
+    version: "1.0.0"
+    debug: false
+
+  # 日志配置
+  log:
+    level: "INFO"
+    directory: "../logs"
+    retention: "7 days"
+
+  # 通用连接池配置
+  pool:
+    min_size: 5
+    max_size: 20
+    timeout: 30
+
+services:
+  # 服务模板（可被子环境扩展）
+  mysql:
+    # 模板实例（会被子环境的同名服务覆盖）
+    instances:
+      - name: "template"
+        type: "mysql"
+        host: "localhost"
+        port: 3306
+        user: "root"
+        password: "password"
+        database: "template_db"
+    default_instance: "template"
+
+  redis:
+    instances:
+      - name: "template"
+        type: "redis"
+        host: "localhost"
+        port: 6379
+        db: 0
+    default_instance: "template"

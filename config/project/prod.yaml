@@ -1,0 +1,108 @@
+# 生产环境配置
+# 继承自 base.yaml
+
+parent: "base"
+
+variables:
+  app:
+    debug: false
+    version: "1.0.0"
+
+  log:
+    level: "WARNING"
+    directory: "/var/log/myapp"
+
+  api:
+    base_url: "https://api.example.com"
+    cors_origins:
+      - "https://example.com"
+
+services:
+  # MySQL 主从集群
+  mysql:
+    instances:
+      # 主库（读写）
+      - name: "master"
+        type: "mysql"
+        host: "mysql-master.example.com"
+        port: 3306
+        user: "prod_user"
+        password: ""  # 通过环境变量 ENV_MYSQL_PASSWORD 覆盖
+        database: "prod_db"
+        ssl_enabled: true
+
+      # 从库 1（只读）
+      - name: "slave-1"
+        type: "mysql"
+        host: "mysql-slave-1.example.com"
+        port: 3306
+        user: "prod_user"
+        password: ""  # 通过环境变量覆盖
+        database: "prod_db"
+        ssl_enabled: true
+
+      # 从库 2（只读）
+      - name: "slave-2"
+        type: "mysql"
+        host: "mysql-slave-2.example.com"
+        port: 3306
+        user: "prod_user"
+        password: ""  # 通过环境变量覆盖
+        database: "prod_db"
+        ssl_enabled: true
+
+    default_instance: "master"
+
+  # Redis 集群（主从 + 哨兵）
+  redis:
+    instances:
+      # 主节点
+      - name: "master"
+        type: "redis"
+        host: "redis-master.example.com"
+        port: 6379
+        db: 0
+        password: ""  # 通过环境变量 ENV_REDIS_PASSWORD 覆盖
+
+      # 从节点 1
+      - name: "slave-1"
+        type: "redis"
+        host: "redis-slave-1.example.com"
+        port: 6379
+        db: 0
+
+      # 哨兵节点
+      - name: "sentinel"
+        type: "redis"
+        host: "redis-sentinel.example.com"
+        port: 26379
+        db: 0
+
+    default_instance: "master"
+
+  # Kafka 集群
+  kafka:
+    instances:
+      - name: "cluster"
+        type: "kafka"
+        host: "kafka-1.example.com"
+        port: 9092
+        bootstrap_servers:
+          - "kafka-1.example.com:9092"
+          - "kafka-2.example.com:9092"
+          - "kafka-3.example.com:9092"
+        group_id: "myapp-prod"
+    default_instance: "cluster"
+
+  # S3 对象存储（生产）
+  s3:
+    instances:
+      - name: "production"
+        type: "s3"
+        host: "s3.amazonaws.com"
+        port: 443
+        region: "us-west-2"
+        bucket: "myapp-prod-bucket"
+        # access_key 和 secret_key 通过环境变量注入
+        # ENV_S3_ACCESS_KEY 和 ENV_S3_SECRET_KEY
+    default_instance: "production"

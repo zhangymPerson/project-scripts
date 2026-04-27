@@ -1,0 +1,58 @@
+# 开发环境配置
+# 继承自 base.yaml
+
+parent: "base"
+
+variables:
+  # 覆盖基础配置
+  app:
+    debug: true
+    version: "1.0.0-dev"
+
+  log:
+    level: "DEBUG"
+
+  # 开发环境特有变量
+  api:
+    base_url: "http://localhost:8000"
+    cors_origins:
+      - "http://localhost:3000"
+      - "http://localhost:8080"
+
+services:
+  # 开发环境 MySQL（单实例）
+  mysql:
+    instances:
+      - name: "master"
+        type: "mysql"
+        host: "localhost"
+        port: 3306
+        user: "dev_user"
+        password: "dev_pass"
+        database: "dev_db"
+        charset: "utf8mb4"
+    default_instance: "master"
+
+  # 开发环境 Redis（单实例）
+  redis:
+    instances:
+      - name: "cache"
+        type: "redis"
+        host: "localhost"
+        port: 6379
+        db: 0
+    default_instance: "cache"
+
+  # 开发环境 MinIO
+  minio:
+    instances:
+      - name: "storage"
+        type: "s3"
+        host: "localhost"
+        port: 9000
+        access_key: "minioadmin"
+        secret_key: "minioadmin"
+        bucket: "dev-bucket"
+        region: "us-east-1"
+        endpoint_url: "http://localhost:9000"
+    default_instance: "storage"

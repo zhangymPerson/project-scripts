@@ -1,0 +1,38 @@
+# 测试环境配置
+# 类似开发环境，但使用独立的测试数据库
+
+parent: "base"
+
+variables:
+  app:
+    debug: true
+    version: "1.0.0-test"
+
+  log:
+    level: "DEBUG"
+
+  api:
+    base_url: "http://test-api.example.com"
+
+services:
+  # 测试环境 MySQL（单实例，清空数据）
+  mysql:
+    instances:
+      - name: "test-db"
+        type: "mysql"
+        host: "localhost"
+        port: 3307
+        user: "test_user"
+        password: "test_pass"
+        database: "test_db"
+    default_instance: "test-db"
+
+  # 测试环境 Redis
+  redis:
+    instances:
+      - name: "test-cache"
+        type: "redis"
+        host: "localhost"
+        port: 6380
+        db: 1  # 使用不同 DB 避免冲突
+    default_instance: "test-cache"
