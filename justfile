@@ -45,10 +45,9 @@ format:
     nu -c 'let files = (ls ...(glob **/*.{sh}) | get name); if ($files | length) > 0 { $files | each { |f| shfmt -i 2 -w $f ; echo $"($f) format success" } }'
     nu -c 'echo "shell 文件检查"'
     nu -c 'let files = (ls ...(glob **/*.{sh}) | get name); if ($files | length) > 0 { shellcheck ...$files }'
-    nu -c 'echo "yaml 格式化"'
-    nu -c 'let files = (ls ...(glob **/*.{yaml,yml}) | get name); if ($files | length) > 0 { $files | each { |f| yq -i "." $f ; echo $"($f) format success" } }'
     nu -c 'echo "遍历所有 justfile 并执行 just -f"'
     nu -c 'let files = (ls ...(glob **/justfile) | get name); if ($files | length) > 0 { $files | each { |f| just -f $f ; echo $"($f) just executed" } }'
+    npx prettier --write .
 
 # 清理项目中的日志文件和临时目录
 clear:

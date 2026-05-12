@@ -111,20 +111,20 @@ project-scripts/
 
 ### 各目录职责
 
-| 目录        | 职责                         | 典型场景                            |
-| ----------- | ---------------------------- | ----------------------------------- |
-| `browser/`  | 浏览器自动化、E2E 测试、爬虫 | Playwright 自动化、Selenium 爬虫    |
+| 目录        | 职责                         | 典型场景                                  |
+| ----------- | ---------------------------- | ----------------------------------------- |
+| `browser/`  | 浏览器自动化、E2E 测试、爬虫 | Playwright 自动化、Selenium 爬虫          |
 | `db/`       | 数据库迁移、种子数据、备份   | MySQL 迁移、MongoDB 索引管理、ES 搜索优化 |
-| `storage/`  | 对象存储操作、文件处理       | S3→MinIO 迁移、图片压缩             |
-| `mq/`       | 消息队列管理                 | RabbitMQ 队列创建、Kafka Topic 管理 |
-| `test/`     | API 测试、E2E 测试、性能测试 | REST Client 测试、Playwright E2E    |
-| `data/`     | ETL、数据清洗、跨库同步      | CSV 导入、用户数据清洗              |
-| `deploy/`   | Docker Compose、K8s 配置     | 多环境部署、Kustomize overlays      |
-| `ci/`       | CI/CD 流水线配置             | GitHub Actions、GitLab CI           |
-| `cron/`     | 定时任务脚本和配置           | 数据库备份、健康检查                |
-| `ops/`      | 一次性运维工具               | 数据库诊断、Token 生成              |
-| `docs/`     | 操作手册、架构文档           | runbook、ADR                        |
-| `examples/` | 代码样例、最佳实践           | 各类文件的参考实现                  |
+| `storage/`  | 对象存储操作、文件处理       | S3→MinIO 迁移、图片压缩                   |
+| `mq/`       | 消息队列管理                 | RabbitMQ 队列创建、Kafka Topic 管理       |
+| `test/`     | API 测试、E2E 测试、性能测试 | REST Client 测试、Playwright E2E          |
+| `data/`     | ETL、数据清洗、跨库同步      | CSV 导入、用户数据清洗                    |
+| `deploy/`   | Docker Compose、K8s 配置     | 多环境部署、Kustomize overlays            |
+| `ci/`       | CI/CD 流水线配置             | GitHub Actions、GitLab CI                 |
+| `cron/`     | 定时任务脚本和配置           | 数据库备份、健康检查                      |
+| `ops/`      | 一次性运维工具               | 数据库诊断、Token 生成                    |
+| `docs/`     | 操作手册、架构文档           | runbook、ADR                              |
+| `examples/` | 代码样例、最佳实践           | 各类文件的参考实现                        |
 
 ## 💡 核心设计原则
 
@@ -340,16 +340,17 @@ task --list | head -20
 **Q: Taskfile.yml 中配置在当前 Taskfile.yml 所在目录执行**
 
 需配置
+
 ```yaml
 # 子任务目录中的 Taskfile.yml
-version: '3'
+version: "3"
 
 tasks:
   your-task:
-    dir: '{{.TASKFILE_DIR}}'
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "当前目录是：$(pwd)"
-      - # 你的其他命令
+      -  # 你的其他命令
 ```
 
 ## 🎯 总结

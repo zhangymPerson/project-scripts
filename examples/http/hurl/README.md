@@ -82,14 +82,14 @@ Authorization: Bearer {{token}}
 
 以下区块无固定顺序，按需添加，格式为 `[区块名]` 开头 + 键值对：
 
-| 区块名 | 用途 | 示例 |
-|--------|------|------|
-| [QueryStringParams] | 定义 URL 查询参数（替代 URL 中 `?key=value`，更易维护） | `[QueryStringParams]`<br>`id: 123`<br>`order: newest` |
-| [FormParams] | 表单参数（Content-Type 自动为 application/x-www-form-urlencoded） | `[FormParams]`<br>`username: test`<br>`password: 123456` |
-| [Multipart] | 文件上传 | `[Multipart]`<br>`field1: value1`<br>`avatar: file,photo.png;` |
-| [Cookies] | 请求携带的 Cookie | `[Cookies]`<br>`session_id: abc123` |
-| [BasicAuth] | HTTP Basic 认证（等价于 curl -u 用户名:密码） | `[BasicAuth]`<br>`alice: secret` |
-| [Options] | 请求级配置（覆盖全局 CLI，如超时/重试/输出） | `[Options]`<br>`retry: 3`<br>`timeout: 10000ms` |
+| 区块名              | 用途                                                              | 示例                                                           |
+| ------------------- | ----------------------------------------------------------------- | -------------------------------------------------------------- |
+| [QueryStringParams] | 定义 URL 查询参数（替代 URL 中 `?key=value`，更易维护）           | `[QueryStringParams]`<br>`id: 123`<br>`order: newest`          |
+| [FormParams]        | 表单参数（Content-Type 自动为 application/x-www-form-urlencoded） | `[FormParams]`<br>`username: test`<br>`password: 123456`       |
+| [Multipart]         | 文件上传                                                          | `[Multipart]`<br>`field1: value1`<br>`avatar: file,photo.png;` |
+| [Cookies]           | 请求携带的 Cookie                                                 | `[Cookies]`<br>`session_id: abc123`                            |
+| [BasicAuth]         | HTTP Basic 认证（等价于 curl -u 用户名:密码）                     | `[BasicAuth]`<br>`alice: secret`                               |
+| [Options]           | 请求级配置（覆盖全局 CLI，如超时/重试/输出）                      | `[Options]`<br>`retry: 3`<br>`timeout: 10000ms`                |
 
 **Query Parameters 示例：**
 
@@ -163,16 +163,16 @@ proxy: 127.0.0.1:8080   # 代理
 
 请求体必须是 Request 最后一部分，支持多格式：
 
-| 类型 | 语法 | 说明 |
-|------|------|------|
-| JSON | 直接写 JSON | 自动设 `Content-Type: application/json` |
-| XML | 直接写 XML | 需手动设 `Content-Type` |
-| GraphQL | ` ```graphql ... ``` ` | 支持 GraphQL variables |
-| 多行文本 | ` ``` ... ``` ` | 通用文本 body |
-| 单行文本 | `` `text` `` | 不含换行的文本 |
-| Base64 | `base64,...;` | 二进制数据 |
-| Hex | `hex,...;` | 二进制数据 |
-| 文件 | `file,data.bin;` | 文件内容作为 body |
+| 类型     | 语法                   | 说明                                    |
+| -------- | ---------------------- | --------------------------------------- |
+| JSON     | 直接写 JSON            | 自动设 `Content-Type: application/json` |
+| XML      | 直接写 XML             | 需手动设 `Content-Type`                 |
+| GraphQL  | ` ```graphql ... ``` ` | 支持 GraphQL variables                  |
+| 多行文本 | ` ``` ... ``` `        | 通用文本 body                           |
+| 单行文本 | `` `text` ``           | 不含换行的文本                          |
+| Base64   | `base64,...;`          | 二进制数据                              |
+| Hex      | `hex,...;`             | 二进制数据                              |
+| 文件     | `file,data.bin;`       | 文件内容作为 body                       |
 
 **JSON body 示例（支持模板变量）：**
 
@@ -311,28 +311,28 @@ CLI 方式：`hurl --secret token=xxx file.hurl`
 
 ### 6.1 谓词函数
 
-| 谓词 | 说明 | 示例 |
-|------|------|------|
-| `==` | 等于 | `jsonpath "$.name" == "Alice"` |
-| `!=` | 不等于 | `jsonpath "$.status" != "error"` |
-| `>` `>=` `<` `<=` | 数值/日期比较 | `jsonpath "$.year" > 2020` |
-| `startsWith` | 开头匹配 | `jsonpath "$.title" startsWith "Hello"` |
-| `endsWith` | 结尾匹配 | `jsonpath "$.file" endsWith ".pdf"` |
-| `contains` | 包含 | `body contains "welcome"` |
-| `matches` | 正则匹配 | `jsonpath "$.phone" matches /\d{11}/` |
-| `exists` | 存在 | `jsonpath "$.email" exists` |
-| `not exists` | 不存在 | `jsonpath "$.deleted" not exists` |
-| `isString` | 类型检查 - 字符串 | `jsonpath "$.name" isString` |
-| `isInteger` | 类型检查 - 整数 | `jsonpath "$.count" isInteger` |
-| `isFloat` | 类型检查 - 浮点数 | `jsonpath "$.price" isFloat` |
-| `isBoolean` | 类型检查 - 布尔值 | `jsonpath "$.active" isBoolean` |
-| `isNumber` | 类型检查 - 数字 | `jsonpath "$.total" isNumber` |
-| `isList` | 类型检查 - 数组 | `jsonpath "$.data" isList` |
-| `isObject` | 类型检查 - 对象 | `jsonpath "$.meta" isObject` |
-| `isEmpty` | 空集合 | `jsonpath "$.items" isEmpty` |
-| `isIsoDate` | ISO 日期 | `jsonpath "$.created" isIsoDate` |
-| `isUuid` | UUID v4 | `jsonpath "$.id" isUuid` |
-| `isIpv4` / `isIpv6` | IP 地址 | `ip isIpv4` |
+| 谓词                | 说明              | 示例                                    |
+| ------------------- | ----------------- | --------------------------------------- |
+| `==`                | 等于              | `jsonpath "$.name" == "Alice"`          |
+| `!=`                | 不等于            | `jsonpath "$.status" != "error"`        |
+| `>` `>=` `<` `<=`   | 数值/日期比较     | `jsonpath "$.year" > 2020`              |
+| `startsWith`        | 开头匹配          | `jsonpath "$.title" startsWith "Hello"` |
+| `endsWith`          | 结尾匹配          | `jsonpath "$.file" endsWith ".pdf"`     |
+| `contains`          | 包含              | `body contains "welcome"`               |
+| `matches`           | 正则匹配          | `jsonpath "$.phone" matches /\d{11}/`   |
+| `exists`            | 存在              | `jsonpath "$.email" exists`             |
+| `not exists`        | 不存在            | `jsonpath "$.deleted" not exists`       |
+| `isString`          | 类型检查 - 字符串 | `jsonpath "$.name" isString`            |
+| `isInteger`         | 类型检查 - 整数   | `jsonpath "$.count" isInteger`          |
+| `isFloat`           | 类型检查 - 浮点数 | `jsonpath "$.price" isFloat`            |
+| `isBoolean`         | 类型检查 - 布尔值 | `jsonpath "$.active" isBoolean`         |
+| `isNumber`          | 类型检查 - 数字   | `jsonpath "$.total" isNumber`           |
+| `isList`            | 类型检查 - 数组   | `jsonpath "$.data" isList`              |
+| `isObject`          | 类型检查 - 对象   | `jsonpath "$.meta" isObject`            |
+| `isEmpty`           | 空集合            | `jsonpath "$.items" isEmpty`            |
+| `isIsoDate`         | ISO 日期          | `jsonpath "$.created" isIsoDate`        |
+| `isUuid`            | UUID v4           | `jsonpath "$.id" isUuid`                |
+| `isIpv4` / `isIpv6` | IP 地址           | `ip isIpv4`                             |
 
 所有谓词都可以加 `not` 前缀取反。
 
@@ -468,12 +468,12 @@ POST https://example.org/api
 
 **重要：Hurl 不支持在文件内直接定义变量，必须通过外部方式注入。**
 
-| 方式 | 示例 |
-|------|------|
-| CLI `--variable` | `hurl --variable host=api.example.com --variable id=42 test.hurl` |
-| CLI `--variables-file` | `hurl --variables-file vars.env test.hurl` |
-| 环境变量 | `HURL_VARIABLE_host=api.example.com hurl test.hurl` |
-| `[Options]` 段 | `variable: host=api.example.com` |
+| 方式                   | 示例                                                              |
+| ---------------------- | ----------------------------------------------------------------- |
+| CLI `--variable`       | `hurl --variable host=api.example.com --variable id=42 test.hurl` |
+| CLI `--variables-file` | `hurl --variables-file vars.env test.hurl`                        |
+| 环境变量               | `HURL_VARIABLE_host=api.example.com hurl test.hurl`               |
+| `[Options]` 段         | `variable: host=api.example.com`                                  |
 
 `vars.env` 文件格式：
 
@@ -584,13 +584,13 @@ hurl --test --report-junit junit.xml *.hurl
 
 ### 退出码
 
-| 码 | 含义 |
-|----|------|
-| 0 | 成功 |
-| 1 | 命令行参数解析失败 |
-| 2 | 输入文件解析错误 |
-| 3 | 运行时错误（连接失败等） |
-| 4 | 断言错误 |
+| 码  | 含义                     |
+| --- | ------------------------ |
+| 0   | 成功                     |
+| 1   | 命令行参数解析失败       |
+| 2   | 输入文件解析错误         |
+| 3   | 运行时错误（连接失败等） |
+| 4   | 断言错误                 |
 
 ### 环境变量
 
@@ -749,7 +749,7 @@ hurlfmt --in curl --out hurl           # curl → hurl 格式
 
 ## 速查表
 
-```
+````
 请求：   METHOD URL
 头：     Header-Name: value
 段：     [QueryStringParams] [FormParams] [Multipart] [Cookies] [BasicAuth] [Options]
@@ -759,4 +759,4 @@ Body：   JSON / XML / ``` ... ``` / `text` / base64,...; / hex,...; / file,...;
 捕获：   [Captures] varname: query
 变量：   {{name}}
 注释：   # ...
-```
+````

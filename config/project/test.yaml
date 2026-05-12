@@ -34,5 +34,5 @@ services:
         type: "redis"
         host: "localhost"
         port: 6380
-        db: 1  # 使用不同 DB 避免冲突
+        db: 1 # 使用不同 DB 避免冲突
     default_instance: "test-cache"
