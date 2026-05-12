@@ -7,7 +7,7 @@
 
 ### 目录结构（按职责域划分）
 - `browser/` - 浏览器自动化/E2E测试 - `task browser`
-- `db/` - 数据库层（mysql/postgresql/mongodb/redis/sqlite） - `task db:mysql|postgresql|mongodb|redis|sqlite`
+- `db/` - 数据库层（mysql/postgresql/mongodb/redis/elasticsearch/sqlite） - `task db:mysql|postgresql|mongodb|redis|elasticsearch|sqlite`
 - `storage/` - 对象存储/文件处理（s3/minio） - `task storage:s3|minio|file-tools`
 - `mq/` - 消息队列（rabbitmq/kafka/redis-streams） - `task mq:rabbitmq|kafka|redis-streams`
 - `test/` - 测试层（api/integration/load） - `task test:api|integration|load`
@@ -45,6 +45,7 @@
 - **Shell**: `bash <script.sh>`（确保脚本有 `set -euo pipefail`）
 - **HTTP测试**: `.http` 文件用VS Code REST Client插件
 - **性能测试**: Hurl测试 `.hurl` 文件
+- **交互式工具**: `fzf` 用于交互式选择，`gum` 用于Shell脚本美化
 
 ## 常见工作流
 
@@ -79,6 +80,12 @@ task db:mongodb
 # Redis
 task db:redis
 
+# Elasticsearch
+task db:elasticsearch
+uv run db/elasticsearch/es-info.py indices
+uv run db/elasticsearch/es-info.py mapping --index my_index
+uv run db/elasticsearch/es-info.py query --index my_index --query '{"match_all": {}}'
+
 # SQLite
 task db:sqlite
 ```
@@ -101,7 +108,7 @@ task deploy:k8s:helm:myapp
 
 ## 环境与配置
 - `.env.example` - 环境变量模板（实际.env被gitignore）
-- 数据库配置: `MYSQL_*`/`POSTGRES_*` 环境变量
+- 数据库配置: `MYSQL_*`/`POSTGRES_*`/`ES_*` 环境变量
 - 调试模式: `DEBUG=true`
 - 所有敏感配置通过环境变量注入
 

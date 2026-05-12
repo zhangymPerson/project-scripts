@@ -16,6 +16,8 @@
 - Bash 5.0+
 - [Task](https://taskfile.dev/)（任务运行器）
 - [just](https://github.com/casey/just)（可选，更好的任务运行器）
+- [fzf](https://github.com/junegunn/fzf)（可选，交互式选择工具）
+- [gum](https://github.com/charmbracelet/gum)（可选，Shell 脚本美化工具）
 
 ### 克隆项目
 
@@ -33,6 +35,7 @@ task --list
 # 运行特定任务
 task browser                    # 浏览器自动化
 task db:mysql                 # MySQL 数据库操作
+task db:elasticsearch         # Elasticsearch 搜索引擎操作
 task storage:s3               # S3 存储操作
 task test:api                 # API 测试
 task deploy:k8s:helm:myapp    # Kubernetes Helm 部署
@@ -60,6 +63,8 @@ uv run browser/browser_example_baidu.py
 # 数据库操作
 uv run db/mysql/example_mysql.py connect
 uv run db/mysql/example_mysql.py tables
+uv run db/elasticsearch/es-info.py indices
+uv run db/elasticsearch/es-info.py mapping --index my_index
 uv run ops/generate_token.py
 
 # 运维工具
@@ -81,6 +86,12 @@ project-scripts/
 │
 ├── browser/             # 浏览器自动化 — E2E 测试、爬虫、自动化操作 | Playwright, Selenium
 ├── db/                  # 数据库层 — 所有数据存储相关
+│   ├── mysql/           # MySQL 数据库管理
+│   ├── postgresql/      # PostgreSQL 数据库管理
+│   ├── mongodb/         # MongoDB 数据库管理
+│   ├── redis/           # Redis 缓存管理
+│   ├── elasticsearch/   # Elasticsearch 搜索引擎管理
+│   └── sqlite/          # SQLite 轻量数据库管理
 ├── storage/             # 存储 & 文件处理 — 非结构化数据
 ├── mq/                  # 消息队列层
 ├── test/                # 测试层 — 所有验证相关
@@ -103,7 +114,7 @@ project-scripts/
 | 目录        | 职责                         | 典型场景                            |
 | ----------- | ---------------------------- | ----------------------------------- |
 | `browser/`  | 浏览器自动化、E2E 测试、爬虫 | Playwright 自动化、Selenium 爬虫    |
-| `db/`       | 数据库迁移、种子数据、备份   | MySQL 迁移、MongoDB 索引管理        |
+| `db/`       | 数据库迁移、种子数据、备份   | MySQL 迁移、MongoDB 索引管理、ES 搜索优化 |
 | `storage/`  | 对象存储操作、文件处理       | S3→MinIO 迁移、图片压缩             |
 | `mq/`       | 消息队列管理                 | RabbitMQ 队列创建、Kafka Topic 管理 |
 | `test/`     | API 测试、E2E 测试、性能测试 | REST Client 测试、Playwright E2E    |

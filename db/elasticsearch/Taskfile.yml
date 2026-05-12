@@ -14,6 +14,8 @@ tasks:
     silent: true
   indices:
     desc: 使用 fzf 筛选 ES 索引列表
+    aliases:
+      - is
     silent: true
     cmds:
       - |
@@ -30,6 +32,8 @@ tasks:
         fi
   mapping:
     desc: 使用 fzf 选择索引，查看 mapping 结构
+    aliases:
+      - m
     silent: true
     cmds:
       - |
@@ -46,6 +50,8 @@ tasks:
         fi
   query:
     desc: 使用 fzf 选择索引，gum write 输入查询条件，执行 ES 检索
+    aliases:
+      - q
     silent: true
     cmds:
       - |
@@ -81,6 +87,8 @@ tasks:
   es-info-help:
     desc: |
       查看 es-info.py 帮助信息 (TASK_CMD=indices|mapping|query 查看子命令帮助 ) 执行命令: task db:es:es-info-help TASK_CMD=query
+    aliases:
+      - h
     cmds:
       - |
         if [ -n "{{ .TASK_CMD }}" ]; then
@@ -88,3 +96,14 @@ tasks:
         else
           uv run es-info.py --help
         fi
+  env:
+    desc: 输出当前 ES 连接配置信息（export 格式）
+    aliases:
+      - e
+    cmds:
+      - |
+        echo "# ES 连接配置"
+        echo "export ES_URL='{{ .ES_URL }}'"
+        echo "export ES_USER='{{ .ES_USER }}'"
+        echo "export ES_PASSWORD='{{ .ES_PASSWORD }}'"
+    silent: true
