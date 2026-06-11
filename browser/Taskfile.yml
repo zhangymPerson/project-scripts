@@ -57,6 +57,10 @@ tasks:
     desc: 运行百度浏览器示例
     cmds:
       - uv run browser_example_baidu.py
+  open-yaml:
+    desc: 从 YAML 文件中选择 URL 并打开
+    cmds:
+      - uv run open_yaml_urls.py {{.CLI_ARGS}}
   format:
     desc: 格式化代码
     cmds:

@@ -79,3 +79,9 @@ tasks:
       - pwd # 验证：输出会是 /Users/zhangyanming/person/project/person/project-scripts/
       - ls # 只会列出根目录下的文件
     silent: true
+
+  symlink:
+    desc: 执行 symlink_project.nu 脚本
+    dir: "{{.TASKFILE_DIR}}"
+    cmds:
+      - nu -c symlink_project.nu
