@@ -63,3 +63,8 @@ tasks:
           exit 1
         fi
         uv run mysql-info.py query --sql "$SQL" | fzf
+  compare-db:
+    desc: 比较主从数据库的表结构和字段差异，生成同步 SQL
+    cmds:
+      - uv run compare_two_db.py compare -c compare_db.yaml
+    silent: false
